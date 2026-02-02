@@ -35,7 +35,19 @@ const validateLoginData = (req)=>{
     }
 }
 
+
+const validateEditProfileData = (req) =>{
+    const allowedEditFields = ["firstName" , "lastName" , "age" , "about" , "gender" , "skills" ];
+    const isUpdateValid = Object.keys(req.body).every(k => allowedEditFields.includes(k))
+    return isUpdateValid;
+}
+
+const validatePasswordChange = (req) => {
+   
+}
+
 module.exports = { 
     validateSignUpData ,
-    validateLoginData
+    validateLoginData,
+    validateEditProfileData
 }
