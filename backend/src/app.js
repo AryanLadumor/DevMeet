@@ -1,21 +1,29 @@
 require("dotenv").config()
 const express = require("express")
+const app = express(); //app --> Server
+//configs
 const connectDB = require("./config/database.js")
+//npm pakages
 const bcrypt = require("bcrypt")
-
+const cookieParser = require("cookie-parser")
+const jwt = require("jsonwebtoken")
+//middleWares
+const {userAuth} = require("./middleware/auth.js")
+//utils
 const {validateSignUpData , validateLoginData} = require("./utils/validations.js")
 
 
-const app = express(); //app --> Server
-
 app.use(express.json())
+app.use(cookieParser())
+
 const User = require("./models/User.js")
 
-//API-> [POST /signup] =>add user to database
+//API -> [POST /signup] => Add user to DB
 app.post("/signup" , async (req,res)=>{
     try{
         //1. validation of data
         validateSignUpData(req)
+
         //Encrypt of password and store to DB
         const {firstName , lastName , emailId , password,age,about,gender,skills,photoURL} = req.body
         const passwordHash = await bcrypt.hash(password , 10);
@@ -30,36 +38,56 @@ app.post("/signup" , async (req,res)=>{
            ...( skills && {skills}),
            ...(photoURL && {photoURL})
         })
-        const result = await user.save(); // return promise
+        //Adding user to db
+        const result = await user.save(); // All db functions will return promise
         res.send(result);
     }catch(err){
         res.send(err.message)
     }
 })
 
-
-//API -> [POST /login]->to login user
+//API -> [POST /login] =>to login user
 app.post("/login" , async(req,res)=>{
     try {
         //validations
         validateLoginData(req)
+
         //Finding If user exits with email
         const {emailId , password} = req.body
-
         const user  = await User.findOne({emailId})
         if(!user){
             throw new Error("Invalid Credentials")
         }
+
         //decryption
         const isPasswordValid = await bcrypt.compare(password , user.password)
-        if(!isPasswordValid){
+        if(isPasswordValid){
+            //creating a jwt
+            const payload = {_id : user._id}
+            const secretKey = process.env.JWT_SECRET
+            const token = await jwt.sign( payload,secretKey,/*{expiresIn : 10}*/)
+
+            //passing token to the cookies in the user browser
+            res.cookie("token" , token , {expires : new Date(Date.now() + 3600000)})
+
+            //logging user
+            res.send("login Succefully")
+        }else{
             throw new Error("Invalid credentials")
         }
-        res.send("login Succefully")
     } catch (error) {
         res.send(error.message)
     }
-    
+})
+
+//API -> [GET /user] => to fetch user profile
+app.get("/user", userAuth, async (req,res)=>{
+    try {
+        const user = req.user;
+        res.send(user);
+    } catch (error) {
+        res.send(error.message)
+    }
 })
 
 
@@ -99,7 +127,7 @@ app.delete("/user/:userId" , async (req,res)=>{
     console.log(err)
  }) //Error middleware to handle any Error
 
- const port = process.env.PORT
+const port = process.env.PORT
 connectDB().then(() => {
     console.log("MongoDB server is Connect");
     app.listen(port, () => { //it takes port to listen requets and cb which is called when server is running
@@ -108,4 +136,3 @@ connectDB().then(() => {
 }).catch((err) => {
     console.log(err)
 })
-
