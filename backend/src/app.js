@@ -59,13 +59,11 @@ app.post("/login" , async(req,res)=>{
             throw new Error("Invalid Credentials")
         }
 
-        //decryption
-        const isPasswordValid = await bcrypt.compare(password , user.password)
+        //decryption by using helper function in User Schema
+        const isPasswordValid = await user.validatePassword(password)
         if(isPasswordValid){
-            //creating a jwt
-            const payload = {_id : user._id}
-            const secretKey = process.env.JWT_SECRET
-            const token = await jwt.sign( payload,secretKey,/*{expiresIn : 10}*/)
+            //Getting JWT by helper Funtion
+            const token = await user.getJWT();
 
             //passing token to the cookies in the user browser
             res.cookie("token" , token , {expires : new Date(Date.now() + 3600000)})
@@ -81,7 +79,7 @@ app.post("/login" , async(req,res)=>{
 })
 
 //API -> [GET /user] => to fetch user profile
-app.get("/user", userAuth, async (req,res)=>{
+app.get("/profile", userAuth, async (req,res)=>{
     try {
         const user = req.user;
         res.send(user);
