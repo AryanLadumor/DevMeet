@@ -17,7 +17,7 @@ router.post("/request/send/:status/:UserId", userAuth ,  async (req, res) => {
             throw new Error(`Invalid Status '${status}'`)
         }
 
-        // to secure API (not to add any other Id)
+        // to secure API (not to add any other unknow Id )
         const toUser = await User.findById(toUserId)
         console.log(toUser)
         if(!toUser){
@@ -52,6 +52,38 @@ router.post("/request/send/:status/:UserId", userAuth ,  async (req, res) => {
     } catch (error) {
         res.status(400).json({msg : "Error: "  + error.message})
     }
+})
+
+router.post("/request/review/:status/:requestId" , userAuth , async (req , res)=>{
+        try {
+        const loggedUser = req.user;
+        const {status , requestId} = req.params;
+
+         //to Secure the dynamic api
+        const allowedStatus = ["accepted" , "rejected" ];
+        if(!allowedStatus.includes(status)){
+            throw new Error("Invalid Status");
+        }
+
+        //to secure api (strick id)
+        const connectionRequest = await ConnectionRequest.findOne({
+            _id : requestId,
+            toUserId : loggedUser,
+            status : "interested"  //hardcorely status should be interedted onlyn 
+        });
+        if(!connectionRequest){
+             return res.status(404).json({msg : "Request Not Found"});
+        }
+
+        //changing status
+        connectionRequest.status = status;
+        const data = await connectionRequest.save();
+
+        res.json({msg : "connection Request " + status , data})
+        } catch (error) {
+            res.status(400).json({msg : "Error "  + error.message})
+        }
+
 })
 
 module.exports = router;
