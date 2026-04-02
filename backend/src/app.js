@@ -6,17 +6,19 @@ const connectDB = require("./config/database.js")
 //npm pakages
 const cookieParser = require("cookie-parser")
 //Routers
-const authRouter = require("./routes/auth.routes.js")
-const profileRouter = require("./routes/profile.routes.js")
-const requestRouter = require("./routes/request.routes.js")
+const authRouter = require("./routes/auth.routes.js");
+const profileRouter = require("./routes/profile.routes.js");
+const requestRouter = require("./routes/request.routes.js");
+const userRouter = require("./routes/user.routes.js");
 //middleWares
 
-app.use(express.json())
-app.use(cookieParser())
+app.use(express.json());
+app.use(cookieParser());
 
-app.use("/" , authRouter)
-app.use("/" , profileRouter)
-app.use("/" , requestRouter)
+app.use("/" , authRouter);
+app.use("/" , profileRouter);
+app.use("/" , requestRouter);
+app.use("/" , userRouter);
 
 
  app.use("/" , (err,req,res)=>{

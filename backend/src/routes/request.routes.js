@@ -5,34 +5,35 @@ const { userAuth } = require("../middleware/auth.js")
 const ConnectionRequest = require("../models/ConnectionRequest.js")
 const User = require("../models/User.js")
 
-router.post("/request/send/:status/:UserId", userAuth ,  async (req, res) => {
+//API -> [POST /request/send/:status/:UserId] => (To send Request = interested or ignored)
+router.post("/request/send/:status/:UserId", userAuth, async (req, res) => {
     try {
         const fromUserId = req.user._id;
         const toUserId = req.params.UserId
         const status = req.params.status;
-        
+
         // to Secure the dynamic api
-        const allowedStatus = ["interested" , "ignored"]
-        if(!allowedStatus.includes(status)){
+        const allowedStatus = ["interested", "ignored"]
+        if (!allowedStatus.includes(status)) {
             throw new Error(`Invalid Status '${status}'`)
         }
 
         // to secure API (not to add any other unknow Id )
         const toUser = await User.findById(toUserId)
         console.log(toUser)
-        if(!toUser){
-            return res.status(404).json({msg:"User Not Found"})
+        if (!toUser) {
+            return res.status(404).json({ msg: "User Not Found" })
         }
 
 
         // to secure API (to not sent duplicate requests)
         const exitingConnectionRequest = await ConnectionRequest.findOne({
-            $or : [
-                {fromUserId,toUserId},
-                {fromUserId:toUserId ,toUserId:fromUserId},
+            $or: [
+                { fromUserId, toUserId },
+                { fromUserId: toUserId, toUserId: fromUserId },
             ]
         })
-        if(exitingConnectionRequest){
+        if (exitingConnectionRequest) {
             throw new Error("Connection Request Already Sent")
         }
 
@@ -46,43 +47,44 @@ router.post("/request/send/:status/:UserId", userAuth ,  async (req, res) => {
         const data = await conRequest.save()
 
         res.json({
-            msg : "Connection Request sent successfully",
+            msg: "Connection Request sent successfully",
             data,
         })
     } catch (error) {
-        res.status(400).json({msg : "Error: "  + error.message})
+        res.status(400).json({ msg: "Error: " + error.message })
     }
 })
 
-router.post("/request/review/:status/:requestId" , userAuth , async (req , res)=>{
-        try {
+//API -> [POST //request/review/:status/:requestId] => (To Review request= accept or reject)
+router.post("/request/review/:status/:requestId", userAuth, async (req, res) => {
+    try {
         const loggedUser = req.user;
-        const {status , requestId} = req.params;
+        const { status, requestId } = req.params;
 
-         //to Secure the dynamic api
-        const allowedStatus = ["accepted" , "rejected" ];
-        if(!allowedStatus.includes(status)){
+        //to Secure the dynamic api
+        const allowedStatus = ["accepted", "rejected"];
+        if (!allowedStatus.includes(status)) {
             throw new Error("Invalid Status");
         }
 
         //to secure api (strick id)
         const connectionRequest = await ConnectionRequest.findOne({
-            _id : requestId,
-            toUserId : loggedUser,
-            status : "interested"  //hardcorely status should be interedted onlyn 
+            _id: requestId,
+            toUserId: loggedUser,
+            status: "interested"  //hardcorely status should be interedted onlyn 
         });
-        if(!connectionRequest){
-             return res.status(404).json({msg : "Request Not Found"});
+        if (!connectionRequest) {
+            return res.status(404).json({ msg: "Request Not Found" });
         }
 
         //changing status
         connectionRequest.status = status;
         const data = await connectionRequest.save();
 
-        res.json({msg : "connection Request " + status , data})
-        } catch (error) {
-            res.status(400).json({msg : "Error "  + error.message})
-        }
+        res.json({ msg: "connection Request " + status, data })
+    } catch (error) {
+        res.status(400).json({ msg: "Error " + error.message })
+    }
 
 })
 
