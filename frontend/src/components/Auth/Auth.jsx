@@ -1,8 +1,11 @@
 import React from 'react'
+import Login from './Login'
 
 const Auth = () => {
   return (
-    <div>Auth</div>
+    <div className='flex justify-center'>
+      <Login/>
+    </div>
   )
 }
 
