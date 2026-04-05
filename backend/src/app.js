@@ -1,5 +1,6 @@
 require("dotenv").config()
 const express = require("express")
+var cors = require('cors')
 const app = express(); //app --> Server
 //configs
 const connectDB = require("./config/database.js")
@@ -11,7 +12,11 @@ const profileRouter = require("./routes/profile.routes.js");
 const requestRouter = require("./routes/request.routes.js");
 const userRouter = require("./routes/user.routes.js");
 //middleWares
-
+const  corsOptions = {
+      origin: 'http://localhost:5173',  // whitelist the frontend part so cokies can be stored automatically
+      credentials: true
+    };
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(cookieParser());
 

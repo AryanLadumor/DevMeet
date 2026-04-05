@@ -1,4 +1,13 @@
+import {  useSelector } from "react-redux";
+import AuthNav from "../Auth/AuthNav";
+
 const Header = () => {
+  const userInfo = useSelector(store=>store.user.userInfo)
+ 
+
+
+  if(!userInfo) return <AuthNav/>
+  const {photoURL,firstName} = userInfo
   return (
     <div className="navbar bg-base-200 shadow-sm p-2">
       {/* DevMeet Logo */}
@@ -6,25 +15,21 @@ const Header = () => {
         <a className="btn btn-soft text-xl">DevMeet</a>
       </div>
       
-      <div className="flex gap-2">
-        {/* Search */}
-        <input
-          type="text"
-          placeholder="Search"
-          className="input input-bordered w-24 md:w-auto"
-        />
+      <div className="flex gap-2 items-center">
+       <p className="text-fuchsia-400 font-semibold">Welcome {firstName}</p>
         {/* Avtar  */}
-        <div className="dropdown dropdown-end mx-5">
+        <div className=" h-full dropdown dropdown-end mx-5">
           <div
             tabIndex={0}
             role="button"
             className="btn btn-ghost btn-circle avatar"
           >
             {/* Avtar Image */}
-            <div className="w-10 rounded-full">
+            <div className="w-16 rounded-full border-[3px] border-green-500 p-[0.1rem] ">
               <img
                 alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                src={photoURL}
+                className="rounded-full"
               />
             </div>
           </div>

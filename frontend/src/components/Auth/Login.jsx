@@ -1,26 +1,38 @@
 import React, { useState } from "react";
 import apiCall from "../../utils/axiosInstance";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../store/userSlice";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
 
     const [emailId , setEmailId] = useState("nami@gmail.com");
     const [password,setPassword] = useState("Nami1234#");
+     const [error, setError] = useState("");
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const handleClick = async()=>{
+      setError("");
         try {
-            const res = apiCall.post("/login" , {emailId , password})
-            console.log(res);
+            const res = await apiCall.post("/login" , {emailId , password})
+            console.log(res.data);
+            dispatch(addUser(res.data.user))
+            navigate("/")
         } catch (error) {
             console.error(error)
         }
-
     }
-
 
 
   return (
     <div className="card card-border bg-base-300 w-xl flex justify-center items-center w-3x p-2 m-4">
       <div className="card-body">
         <h2 className="card-title flex justify-center text-purple-400 text-xl">Login</h2>
+
+        {/* Error message */}
+        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+
         {/* Email Field */}
         <label className="input validator w-sm m-3 p-1">
           <svg

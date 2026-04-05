@@ -1,0 +1,1 @@
+export const  PHOTO_URL="https://tse3.mm.bing.net/th/id/OIP.3QFyrNxwWam0ZopJXZZhaAHaHa?pid=Api&P=0&h=180";

@@ -19,6 +19,7 @@ router.post("/signup" , async (req,res)=>{
            firstName,
            emailId,
            password:passwordHash,
+           photoURL:photoURL,
            ...(lastName && {lastName}),
            ...( age && {age}),
            ...( about && {about} ),
@@ -57,7 +58,7 @@ router.post("/login" , async(req,res)=>{
             res.cookie("token" , token , {expires : new Date(Date.now() + 3600*1000)})  // expires after 1 hour
 
             //logging user
-            res.send("login Succefully")
+            res.json({msg:"login Succefull" , user})
         }else{
             throw new Error("Invalid credentials")
         }
