@@ -57,6 +57,7 @@ router.get("/user/requests/received", userAuth, async (req, res) => {
         })
     } catch (error) {
         res.status(400).json({ msg: "Error " + error.message })
+        
     }
 })
 
@@ -69,7 +70,7 @@ router.get("/user/feed", userAuth, async (req, res) => {
         //pagination for feed API 
         const page = parseInt(req.query.page) || 1
         let limit = parseInt(req.query.limit) || 10
-        limit = limit>30? 30 : limit
+        limit = limit>20? 20 : limit
         const skip = (page-1)*limit
 
         //all user which have sended or reviewed request to logged User

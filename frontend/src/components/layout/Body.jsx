@@ -12,7 +12,7 @@ const Body = () => {
     const fetchUser = async () => {
       try {
         const res = await apiCall.get("/profile/view");
-        console.log(res.data)
+        // console.log(res.data)
         dispatch(addUser(res.data.user));
       } catch (error) {
         dispatch(removeUser())
@@ -24,7 +24,7 @@ const Body = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col items-center ">
+    <div className=" ">
       <Header />
       <Outlet />
       <Footer />
