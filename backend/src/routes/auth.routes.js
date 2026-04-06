@@ -72,9 +72,9 @@ router.post("/logout" , (req,res)=>{
     try {
         res
         .cookie("token" , null , {expires : new Date(Date.now())})
-        .send("LoggedOut Successful")
+        .json({msg : "Logged Out Successful"})
     } catch (error) {
-        res.status(400).send(error.message)
+        res.status(400).json(error)
     }
 })
 

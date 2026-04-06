@@ -26,7 +26,8 @@ const Login = () => {
 
 
   return (
-    <div className="card card-border bg-base-300 w-xl flex justify-center items-center w-3x p-2 m-4">
+    <div className="flex h-screen w-screen top-0 items-center justify-center">
+    <div className="card card-border bg-base-300 w-xl flex justify-center items-center w-3x p-2 m-4 ">
       <div className="card-body">
         <h2 className="card-title flex justify-center text-purple-400 text-xl">Login</h2>
 
@@ -99,6 +100,7 @@ const Login = () => {
           <button className="btn btn-primary " onClick={handleClick}>Login</button>
         </div>
       </div>
+    </div>
     </div>
   );
 };

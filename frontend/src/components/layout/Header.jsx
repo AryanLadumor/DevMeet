@@ -1,22 +1,43 @@
-import {  useSelector } from "react-redux";
-import AuthNav from "../Auth/AuthNav";
+import { useDispatch, useSelector } from "react-redux";
+
+import apiCall from "../../utils/axiosInstance";
+import { Link, useNavigate } from "react-router-dom";
+import { removeUser } from "../../store/userSlice";
+
 
 const Header = () => {
-  const userInfo = useSelector(store=>store.user.userInfo)
- 
+  const userInfo = useSelector((store) => store.user.userInfo);
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
+  const handleLogout = async () => {
+    try {
+      await apiCall.post("/logout"); //API CALL ==> Logout
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(removeUser());
+      navigate("/login")
+    }
+  };
 
-  if(!userInfo) return <AuthNav/>
-  const {photoURL,firstName} = userInfo
+  if (!userInfo) {
+    return (
+      <div className="flex justify-center text-purple-400 font-semibold text-3xl p-4">
+        DevMeet
+      </div>
+    );
+  }
+  const { photoURL, firstName } = userInfo;
   return (
     <div className="navbar bg-base-200 shadow-sm p-2">
       {/* DevMeet Logo */}
       <div className="flex-1">
-        <a className="btn btn-soft text-xl">DevMeet</a>
+        <Link to="/" className="btn btn-soft text-xl">DevMeet</Link>
       </div>
-      
+
       <div className="flex gap-2 items-center">
-       <p className="text-fuchsia-400 font-semibold">Welcome {firstName}</p>
+        <p className="text-fuchsia-400 font-semibold">Welcome {firstName}</p>
         {/* Avtar  */}
         <div className=" h-full dropdown dropdown-end mx-5">
           <div
@@ -40,18 +61,18 @@ const Header = () => {
           >
             {/* Profile */}
             <li>
-              <a className="justify-between">
+              <Link to="/profile" className="justify-between" >
                 Profile
                 <span className="badge">New</span>
-              </a>
+              </Link>
             </li>
             {/* Setting */}
             <li>
-              <a>Settings</a>
+              <button>Settings</button>
             </li>
             {/* Logout */}
             <li>
-              <a>Logout</a>
+              <button onClick={handleLogout}>Logout</button>
             </li>
           </ul>
         </div>
