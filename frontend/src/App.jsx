@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Body from "./components/layout/Body";
-import Profile from "./components/profile/Profile";
 import Feed from "./components/feed/Feed";
 import Login from "./components/Auth/Login";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
               path="/profile"
               element={
                 <ProtectedRoute>
-                  <Profile />
+                  <ProfilePage />
                 </ProtectedRoute>
               }
             />

@@ -22,20 +22,21 @@ router.patch("/profile/edit" , userAuth , async (req,res)=>{
         }
         const loggedUser = req.user
 
-        console.log(loggedUser)
+        
         //updating into the browser(req)
         Object.keys(req.body).forEach(k => loggedUser[k] = req.body[k])
-        console.log(loggedUser)
+        
 
         //updating into database
         await loggedUser.save();
-
+          
         res.json({
-            msg : `${loggedUser.firstName} profile has benn updated`,
-            data : loggedUser
+            msg : `${loggedUser.firstName} profile has been updated`,
+            user : loggedUser
         })
     } catch (err) {
-        res.status(400).send(err.message)
+        res.status(400).json({msg:err.message})
+        console.dir(err.message)
     }
 })
 

@@ -1,12 +1,13 @@
 import React from "react";
 
 const UserCard = ({user}) => {
-    if(!user) return (<div></div>)
+    if(!user) return (<span className="loading loading-dots loading-xs"></span>)
     const {firstName,lastName,age,gender,photoURL,about,skills} = user
   return (
     <div className="card bg-base-200 w-80 shadow-sm">
       <figure>
         <img
+        className="rounded cover-full w-full "
           src={photoURL}
           alt="No photo"
         />
