@@ -33,7 +33,7 @@ router.get("/user/connections", userAuth, async (req, res) => {
 
         res.json({
             msg: "Data Fetched Successfully",
-            data: allConnections
+            connections: allConnections
         })
     } catch (error) {
         res.status(400).json({ msg: "Error: " + error.message })
@@ -42,7 +42,7 @@ router.get("/user/connections", userAuth, async (req, res) => {
 
 })
 
-//API -> [GET /user/requests/received] => (To Get All the )
+//API -> [GET /user/requests/received] => (To Get All the requests)
 router.get("/user/requests/received", userAuth, async (req, res) => {
     try {
         const loggedInUser = req.user;

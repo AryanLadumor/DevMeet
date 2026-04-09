@@ -4,6 +4,8 @@ import Feed from "./components/feed/Feed";
 import Login from "./components/Auth/Login";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ProfilePage from "./pages/ProfilePage";
+import ConnectionsPage from "./pages/ConnectionsPage";
+import RequestsPage from "./pages/RequestsPage";
 
 function App() {
   return (
@@ -31,6 +33,26 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            <Route
+              path="/connections"
+              element={
+                <ProtectedRoute>
+                  <ConnectionsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/requests"
+              element={
+                <ProtectedRoute>
+                  <RequestsPage />
+                </ProtectedRoute>
+              }
+            />
+
+
 
           </Route>
         </Routes>

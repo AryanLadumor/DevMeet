@@ -66,9 +66,13 @@ const Header = () => {
                 <span className="badge">New</span>
               </Link>
             </li>
-            {/* Setting */}
+            {/* connections */}
             <li>
-              <button>Settings</button>
+              <Link to="/connections">Your connetions</Link>
+            </li>
+            {/* Requests */}
+            <li>
+              <Link to="/requests">Requests</Link>
             </li>
             {/* Logout */}
             <li>
