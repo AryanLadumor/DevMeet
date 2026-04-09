@@ -12,19 +12,24 @@ const Connections = () => {
     };
     getUserConnections();
   }, []);
-
-
-
   if (!userConnections)
     return (
-      <div className="flex justify-center">
-        <span className="  loading loading-ring loading-xl"></span>
+      <div className="flex justify-center items-center m-10">
+        <span className="loading loading-infinity loading-xl"></span>
+      </div>
+    );  
+  if (userConnections.length == 0)
+    return (
+      <div className="flex justify-center items-center m-10">
+        --You Don't Have Connetions Make Some--
       </div>
     );
+  
   return (
     <div className="flex flex-col justify-center items-center">
-      {userConnections.map(connection=><ConnectionsCard key={connection._id} user={connection} />)}
-      
+      {userConnections.map((connection) => (
+        <ConnectionsCard key={connection._id} user={connection} />
+      ))}
     </div>
   );
 };

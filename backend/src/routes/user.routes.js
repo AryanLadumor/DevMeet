@@ -53,7 +53,7 @@ router.get("/user/requests/received", userAuth, async (req, res) => {
 
         res.json({
             msg: "Data Fetched Successfully",
-            data: requests,
+            requests: requests,
         })
     } catch (error) {
         res.status(400).json({ msg: "Error " + error.message })

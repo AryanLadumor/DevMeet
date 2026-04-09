@@ -1,8 +1,11 @@
 import React from 'react'
+import Requests from '../components/requests/Requests'
 
 const RequestsPage = () => {
   return (
-    <div>RequestsPage</div>
+    <div>
+      <Requests />
+    </div>
   )
 }
 
