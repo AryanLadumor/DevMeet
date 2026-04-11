@@ -9,3 +9,7 @@
 - Redux Store initalize And created userSlice
 - added protected route so if no token then user have to login
 - if user has token directly push to feed
+- created profile and profile update
+- create conection page to watch all current connections
+- create requests page to see all requests
+- implemented accept or reject request from the requests list
