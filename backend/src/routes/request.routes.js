@@ -71,7 +71,7 @@ router.post("/request/review/:status/:requestId", userAuth, async (req, res) => 
         const connectionRequest = await ConnectionRequest.findOne({
             _id: requestId,
             toUserId: loggedUser,
-            status: "interested"  //hardcorely status should be interedted onlyn 
+            status: "interested"  //hardcorely status should be interedted only
         });
         if (!connectionRequest) {
             return res.status(404).json({ msg: "Request Not Found" });
@@ -81,7 +81,7 @@ router.post("/request/review/:status/:requestId", userAuth, async (req, res) => 
         connectionRequest.status = status;
         const data = await connectionRequest.save();
 
-        res.json({ msg: "connection Request " + status, data })
+        res.json({ msg: status==="accepted"? `${connectionRequest.fromUserId.firstName} now is you connection ` : "Request rejected", data })
     } catch (error) {
         res.status(400).json({ msg: "Error " + error.message })
     }

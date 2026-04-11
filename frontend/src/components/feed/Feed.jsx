@@ -25,11 +25,13 @@ const Feed = () => {
       }
 
       getFeed();
-    },[])
+    },[dispatch])
 
+    if(feed.length<=0) return <h1 className="m-3 p-2 flex justify-center">No more User</h1>
   return (
     <div className="m-3 p-2 flex justify-center ">
       {error}
+      
      {feed && <UserCard user={feed[0]} />}
     </div>
   )
