@@ -20,7 +20,7 @@ router.post("/request/send/:status/:UserId", userAuth, async (req, res) => {
 
         // to secure API (not to add any other unknow Id )
         const toUser = await User.findById(toUserId)
-        console.log(toUser)
+        
         if (!toUser) {
             return res.status(404).json({ msg: "User Not Found" })
         }
@@ -43,7 +43,7 @@ router.post("/request/send/:status/:UserId", userAuth, async (req, res) => {
             toUserId,
             status
         })
-        console.log(conRequest)
+        
         const data = await conRequest.save()
 
         res.json({

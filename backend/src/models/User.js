@@ -88,7 +88,7 @@ userSchema.methods.getJWT  = async function (){
     //creating a jwt
     const payload = {_id : this._id}
     const secretKey = process.env.JWT_SECRET
-    const token = await jwt.sign( payload,secretKey,/*{expiresIn : 10}*/)
+    const token =  jwt.sign( payload,secretKey,/*{expiresIn : 10}*/)
 
     return token
 }

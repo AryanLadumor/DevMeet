@@ -29,7 +29,9 @@ router.post("/signup" , async (req,res)=>{
         })
         //Adding user to db
         const result = await user.save(); // All db functions will return promise
-        res.send(result);
+         const token = await user.getJWT();
+        res.cookie("token" , token , {expires : new Date(Date.now() + 3600*1000) , httpOnly:true})  // expires after 1 hour
+        res.json({msg:"registered Succefull" , user:result});
     }catch(err){
         res.status(400).send(err.message)
     }
@@ -55,7 +57,7 @@ router.post("/login" , async(req,res)=>{
             const token = await user.getJWT();
 
             //passing token to the cookies in the user browser
-            res.cookie("token" , token , {expires : new Date(Date.now() + 3600*1000)})  // expires after 1 hour
+            res.cookie("token" , token , {expires : new Date(Date.now() + 3600*1000),httpOnly:true})  // expires after 1 hour
 
             //logging user
             res.json({msg:"login Succefull" , user})
