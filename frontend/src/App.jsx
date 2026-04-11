@@ -6,13 +6,15 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ProfilePage from "./pages/ProfilePage";
 import ConnectionsPage from "./pages/ConnectionsPage";
 import RequestsPage from "./pages/RequestsPage";
+import Register from "./components/Auth/Register";
 
 function App() {
   return (
     <>
       <BrowserRouter basename="/">
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} /> 
 
           <Route path="/" element={<Body />}>
 

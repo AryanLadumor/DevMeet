@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import apiCall from "../../utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../store/userSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const [emailId, setEmailId] = useState("nami@gmail.com");
   const [password, setPassword] = useState("Nami1234");
@@ -111,6 +111,7 @@ const Login = () => {
             </button>
           </div>
         </div>
+        <p>Don't have an account. <Link to="/register">Register</Link></p>
       </div>
     </div>
   );
