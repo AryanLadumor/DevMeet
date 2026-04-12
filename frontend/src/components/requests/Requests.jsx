@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RequestsCard from "./RequestsCard";
 import apiCall from "../../utils/axiosInstance";
-import Toast from "../../utils/toast";
 const Requests = () => {
   const [requests, setRequests] = useState(null);
 

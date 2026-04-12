@@ -9,7 +9,7 @@ const userAuth = async (req,res,next) =>{
            return res.status(401).json({msg : "Please Login!"})
         }
         //verifying the token
-        const decodedMsg = await jwt.verify(token , process.env.JWT_SECRET)
+        const decodedMsg =  jwt.verify(token , process.env.JWT_SECRET)
         if(!decodedMsg){
             throw new Error("please Login")
         }
