@@ -9,7 +9,7 @@ const EditProfile = ({ user }) => {
   const [lastName, setLastName] = useState(user.lastName || "");
   const [photoURL, setPhotoURL] = useState(user.photoURL || "");
   const [about, setAbout] = useState(user.about || "");
-  const [skills, setSkills] = useState(user.skills || "");
+  const [skills, setSkills] = useState(user.skills?.join(", ") || "");
   const [age, setAge] = useState(user.age || "");
   const [gender, setGender] = useState(user.gender || "");
 
@@ -24,8 +24,8 @@ const EditProfile = ({ user }) => {
 
         ...(photoURL && { photoURL }),
         ...(about && { about }),
-        ...(skills && { skills }),
-        ...(age && { age }),
+         ...(skills && { skills: skills.split(",").map(s => s.trim()).filter(Boolean) }),
+        ...(age && { age: Number(age) }),
         ...(gender && { gender }),
       });
       setMsgText(res.data.msg);

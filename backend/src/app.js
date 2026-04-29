@@ -13,12 +13,11 @@ const authRouter = require("./routes/auth.routes.js");
 const profileRouter = require("./routes/profile.routes.js");
 const requestRouter = require("./routes/request.routes.js");
 const userRouter = require("./routes/user.routes.js");
-//middleWares
-// backend/src/app.js
+
+
 const corsOptions = {
-  // Allow the Nginx frontend (Port 80) and the direct backend port (7777)
-  origin: [`http://${ip}`, `http://${ip}:7777`],
-  credentials: true,
+  origin: "http://localhost:5173",
+  credentials: true,  
 };
 app.use(cors(corsOptions));
 app.use(express.json());

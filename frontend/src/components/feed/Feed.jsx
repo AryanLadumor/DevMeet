@@ -32,7 +32,7 @@ const Feed = () => {
     <div className="m-3 p-2 flex justify-center ">
       {error}
       
-     {feed && <UserCard user={feed[0]} />}
+     {feed && <UserCard  key={feed[0]._id} user={feed[0]} />}
     </div>
   )
 }
