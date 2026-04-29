@@ -10,7 +10,7 @@ router.get("/profile/view", userAuth, async (req,res)=>{
         const user = req.user;
         res.json({user});
     } catch (error) {
-        res.send(error.message)
+        res.json(error.message)
     }
 })
 
@@ -62,7 +62,7 @@ router.patch("/profile/password" , userAuth , async (req,res)=>{
             msg:"password changed",
         })
     } catch (err) {
-        res.status(400).send(err.message)
+        res.status(400).json(err.message)
     }
 })
 

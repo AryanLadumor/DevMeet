@@ -16,7 +16,7 @@ const userRouter = require("./routes/user.routes.js");
 
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "",
   credentials: true,  
 };
 app.use(cors(corsOptions));
@@ -28,9 +28,10 @@ app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
 
-app.use("/", (err, req, res) => {
-  console.log(err);
-}); //Error middleware to handle any Error
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Internal Server Error" });
+});//Error middleware to handle any Error
 
 connectDB()
   .then(() => {
