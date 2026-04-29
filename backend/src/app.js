@@ -1,6 +1,7 @@
 require("dotenv").config();
 const port = process.env.PORT;
 const ip = process.env.PUBLIC_IP;
+const frontend_url = process.env.FRONTEND_URL
 const express = require("express");
 var cors = require("cors");
 const app = express(); //app --> Server
@@ -16,7 +17,7 @@ const userRouter = require("./routes/user.routes.js");
 
 
 const corsOptions = {
-  origin: "",
+  origin: frontend_url,
   credentials: true,  
 };
 app.use(cors(corsOptions));
