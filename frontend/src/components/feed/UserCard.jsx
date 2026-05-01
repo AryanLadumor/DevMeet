@@ -30,6 +30,7 @@ const UserCard = ({ user }) => {
       setTimeout(() => dispatch(removeUserFromFeed(userId)), 450);
     } catch (error) {
       console.log(error);
+      console.dir(error);
       setLeaving(false);
       setAction(null);
     }

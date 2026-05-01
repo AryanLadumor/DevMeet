@@ -1,7 +1,13 @@
 node_modules/
-.env
+
+
+*.env
 dist/
-Learning/
+
+
+
+Learn_Node/
+Learn_AWS/
 
 # Logs
 logs
