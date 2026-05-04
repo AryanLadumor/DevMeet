@@ -1,4 +1,6 @@
 require("dotenv").config();
+
+
 const port = process.env.PORT;
 const ip = process.env.PUBLIC_IP;
 const frontend_url = process.env.FRONTEND_URL
@@ -14,6 +16,10 @@ const authRouter = require("./routes/auth.routes.js");
 const profileRouter = require("./routes/profile.routes.js");
 const requestRouter = require("./routes/request.routes.js");
 const userRouter = require("./routes/user.routes.js");
+
+//cron jobs
+require("./utils/cronJobs.js")
+
 
 
 const corsOptions = {
