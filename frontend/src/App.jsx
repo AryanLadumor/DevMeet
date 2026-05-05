@@ -7,6 +7,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ConnectionsPage from "./pages/ConnectionsPage";
 import RequestsPage from "./pages/RequestsPage";
 import Register from "./components/Auth/Register";
+import Chat from "./components/chat/Chat";
 
 function App() {
   return (
@@ -50,6 +51,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <RequestsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/chat/:targetUserId"
+              element={
+                <ProtectedRoute>
+                  <Chat />
                 </ProtectedRoute>
               }
             />

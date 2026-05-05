@@ -221,7 +221,7 @@ const UserCard = ({ user }) => {
             ✕
           </button>
           <button
-            className="btn flex-[2] text-white font-bold tracking-wider hover:-translate-y-0.5 transition-all"
+            className="btn  text-white font-bold tracking-wider hover:-translate-y-0.5 transition-all"
             style={{
               background: "linear-gradient(135deg, #7c3aed, #a855f7)",
               borderRadius: "14px",
