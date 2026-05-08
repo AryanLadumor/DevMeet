@@ -1,4 +1,14 @@
 const socket = require("socket.io");
+const crypto = require("crypto");
+const Chat = require("../models/Chat");
+const ConnectionRequest = require("../models/ConnectionRequest");
+
+const getSecretRoomId = ({ userId, targetUserId }) => {
+  return crypto
+    .createHash("sha256")
+    .update([userId, targetUserId].sort().join("_"))
+    .digest("hex");
+};
 
 const initializeSocket = (server) => {
   const io = socket(server, {
@@ -8,25 +18,84 @@ const initializeSocket = (server) => {
   });
 
   io.on("connection", (socket) => {
-    //Handle events
+    //all event handler
 
-    //hadller for "joinChat"
-    socket.on("joinChat", ({fn, userId, targetUserId }) => {
+    socket.on("joinChat", async ({ fn, userId, targetUserId }) => {
       //whenerve someone open this page we nned to create a room for every diff pair of person
-      const roomId = [userId,targetUserId].sort().join("_"); //sorting so that the room id will be same for the both user
+      const roomId = getSecretRoomId({ userId, targetUserId });
 
-        console.log(`${fn} join the room ${roomId}`)
-        socket.join(roomId);
+      const areFriends = await ConnectionRequest.exists({
+        status: "accepted",
+        $or: [
+          { fromUserId: userId, toUserId: targetUserId },
+          { fromUserId: targetUserId, toUserId: userId },
+        ],
+      });
+      if (!areFriends) return; // don't even let them join the room
+      socket.areFriends = true;
+
+      console.log(`${fn} join the room ${roomId}`);
+      socket.join(roomId);
     });
 
-    socket.on("sendMessage", ({firstName , lastName ,userId ,photoURL,targetUserId , newMessage}) => {
-      const roomId = [userId,targetUserId].sort().join("_");
-      console.log(`${firstName} ${lastName} send msg: ${newMessage}`)
-        io.to(roomId).emit("messageRecived" , {firstName , lastName , photoURL, newMessage})
-    });
+    socket.on(
+      "sendMessage",
+      async ({
+        firstName,
+        lastName,
+        userId,
+        photoURL,
+        targetUserId,
+        newMessage,
+        createdAt,
+      }) => {
+        try {
+          const roomId = getSecretRoomId({ userId, targetUserId });
+          console.log(`${firstName} ${lastName} send msg: ${newMessage}`);
+
+          //Security can only send message if they are friend
+          if (!socket.areFriends) return;
+
+          //saving messages to data base
+          let chat = await Chat.findOneAndUpdate(
+            { participants: { $all: [userId, targetUserId] } },
+            { $push: { messages: { senderId: userId, text: newMessage } } },
+            { upsert: true, new: true },
+          );
+
+          //if chat not found then create new one
+          if (!chat) {
+            chat = new Chat({
+              participants: [userId, targetUserId],
+              messages: [],
+            });
+          }
+
+          chat.messages.push({
+            senderId: userId,
+            text: newMessage,
+          });
+
+          await chat.save();
+
+          io.to(roomId).emit("messageRecived", {
+            firstName,
+            lastName,
+            photoURL,
+            newMessage,
+            createdAt: new Date(),
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    );
 
     socket.on("disconnect", () => {});
   });
 };
 
 module.exports = initializeSocket;
+
+//TODO limit messages
+//TODO implement auth in socket

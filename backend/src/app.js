@@ -15,6 +15,7 @@ const authRouter = require("./routes/auth.routes.js");
 const profileRouter = require("./routes/profile.routes.js");
 const requestRouter = require("./routes/request.routes.js");
 const userRouter = require("./routes/user.routes.js");
+const chatRouter = require("./routes/chat.routes.js")
 
 //cron jobs
 require("./utils/cronJobs.js")
@@ -37,6 +38,8 @@ app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
+app.use("/", chatRouter);
+
 
 app.use((err, req, res, next) => {
   console.error(err);

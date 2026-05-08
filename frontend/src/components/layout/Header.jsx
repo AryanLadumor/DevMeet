@@ -43,10 +43,10 @@ const Header = () => {
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-ghost btn-circle avatar"
+            className="btn btn-ghost btn-circle avatar w-16"
           >
             {/* Avtar Image */}
-            <div className="w-16 rounded-full border-[3px] border-green-500 p-[0.1rem] ">
+            <div className="w-13 rounded-full border-[3px] border-green-500 p-[0.1rem] ">
               <img
                 alt="Tailwind CSS Navbar component"
                 src={photoURL}
