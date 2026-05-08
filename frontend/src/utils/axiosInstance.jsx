@@ -1,7 +1,8 @@
 import axios from "axios"
+import {  BASE_URL , BACKEND_ROUTE_URL } from "./Constants"
 
 const apiCall = axios.create({
-    baseURL:import.meta.env.VITE_API_BASE_URL,
+    baseURL:  location.hostname==="localhost"? BASE_URL :BACKEND_ROUTE_URL,
     withCredentials:true
 })
 
