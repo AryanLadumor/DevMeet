@@ -36,16 +36,16 @@ const createSendEmailCommand = (toAddress, fromAddress, emailObj) => {
         /* required */
         Html: {
           Charset: "UTF-8",
-          Data: `<h1>${emailObj?.msg || "mssage"}</h1>`,
+          Data: `<h1>${emailObj?.msg || "Here will be the body of HTML"}</h1>`,
         },
         Text: {
           Charset: "UTF-8",
-          Data: emailObj?.text || "simple text",
+          Data: emailObj?.text || "Text Of Email",
         },
       },
       Subject: {
         Charset: "UTF-8",
-        Data: emailObj?.subject || "demo Subject",  
+        Data: emailObj?.subject || "Subject Of Email",  
       },
     },
     Source: fromAddress,
