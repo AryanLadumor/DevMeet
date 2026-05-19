@@ -1,5 +1,95 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, cupcake;
+}
+
+/* Tailwind v4 Configuration Theme Customizations */
+@theme {
+  --animate-subtle-pulse: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  
+  /* Smooth fluid transitions across screen resizes */
+  --transition-timing-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-timing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Global Modern Baseline Overrides --- */
+@layer base {
+  html, body {
+    @apply h-full w-full bg-base-100 text-base-content antialiased scroll-smooth;
+    overflow-x: hidden !important; /* Critical to prevent breaking horizontal mobile swipe gestures */
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Optimized high-fidelity touch interactions for mobile viewports */
+  input, button, textarea, select, a {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-base-100;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Responsive styling for utility tags inside components */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* --- Custom Utility & UI Enhancement Layers --- */
+@layer utilities {
+  /* Premium Glassmorphism Overlays for Mobile Cards and Drawers */
+  .glass-premium {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  [data-theme="light"] .glass-premium {
+    background: rgba(0, 0, 0, 0.02);
+    backdrop-filter: blur(16px) saturate(100%);
+    -webkit-backdrop-filter: blur(16px) saturate(100%);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  /* Custom Desktop vs Mobile Mobile Responsive Padding Wrapper */
+  .app-container {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Safe Screen Viewport Height for Layout Sections minus Header/Footer context */
+  .content-viewport {
+    min-height: calc(100vh - 5rem);
+  }
+}
+
+/* --- Cross-Device High-Fidelity Custom Scrollbar System --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-base-200, rgba(0, 0, 0, 0.05));
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-base-300, rgba(255, 255, 255, 0.1));
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral, rgba(124, 58, 237, 0.4));
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Beautiful text selection colors matching premium tech style */
+::selection {
+  background-color: rgba(167, 139, 250, 0.3);
+  color: inherit;
 }

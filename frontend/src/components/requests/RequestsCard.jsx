@@ -1,53 +1,94 @@
-import React from "react";
+import React, { useState } from "react";
 import apiCall from "../../utils/axiosInstance";
 
 const RequestsCard = ({ user, reqId, onReply }) => {
   const { firstName, lastName, age, gender, about, photoURL } = user;
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const reqRelpy = async (stat, _id) => {
+  const reqReply = async (stat, _id) => {
+    if (isProcessing) return;
+    setIsProcessing(true);
     try {
-      const res = await apiCall.post(`/request/review/${stat}/${_id}`);
-      console.log(res.data);
+      await apiCall.post(`/request/review/${stat}/${_id}`);
       onReply(reqId);
     } catch (error) {
-      console.dir(error);
+      console.error("Error updating request status:", error);
       onReply(null);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Modern gender icon tag pairing selector
+  const getGenderIcon = (g) => {
+    switch (g?.toLowerCase()) {
+      case "male": return "♂";
+      case "female": return "♀";
+      default: return "⚧";
     }
   };
 
   return (
-    <>
-      <div className="list-row bg-base-300 m-3 w-lg">
-        <div>
-          <img className="size-15 rounded-full" src={photoURL} />
-        </div>
-        <div>
-          <div className="font-semibold">{firstName + " " + lastName}</div>
-          <div>
-            {gender} . {age}
+    <div className="card bg-base-200 border border-base-300 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden flex flex-col justify-between p-5 group hover:border-secondary/20">
+      
+      {/* Profile Info Header Content layout mapping */}
+      <div className="flex gap-4 items-start">
+        {/* Aspect-stabilized Avatar Container frame wrapper */}
+        <div className="avatar shrink-0">
+          <div className="w-16 h-16 rounded-full ring-2 ring-base-300 group-hover:ring-secondary/40 transition-all overflow-hidden bg-base-300">
+            <img 
+              className="w-full h-full object-cover rounded-full"
+              src={photoURL || "https://example.com/default-avatar.png"} 
+              alt={`${firstName}'s profile layout picture`}
+              loading="lazy"
+            />
           </div>
-          <div className="text-xs uppercase font-semibold opacity-60">
-            {about}
+        </div>
+
+        {/* Identity Information Details Stack context block */}
+        <div className="flex flex-col min-w-0">
+          <h4 className="font-bold text-md text-base-content truncate tracking-tight">
+            {firstName} {lastName}
+          </h4>
+          
+          <div className="flex items-center gap-1.5 mt-0.5 text-xs font-semibold text-base-content/60">
+            <span className="opacity-80">{getGenderIcon(gender)}</span>
+            <span className="capitalize">{gender || "Developer"}</span>
+            <span className="text-base-content/30">•</span>
+            <span>{age || "—"} yrs</span>
           </div>
         </div>
+      </div>
+
+      {/* User About Summary Block Description */}
+      <div className="mt-4 flex-1">
+        <p className="text-sm text-base-content/70 font-medium line-clamp-2 leading-relaxed min-h-[2.5rem]">
+          {about || "Hey there! Let's collaborate and check out our matching tech stack fields."}
+        </p>
+      </div>
+
+      {/* Action Decision Control Buttons Layout Wrapper Panel */}
+      <div className="flex items-center gap-3 mt-5 pt-3 border-t border-base-300/40 w-full">
+        {/* Reject Interaction Trigger Option Button */}
         <button
-          className="btn btn-error "
-          onClick={() => {
-            reqRelpy("rejected", reqId);
-          }}
+          className="btn btn-outline btn-error btn-sm flex-1 h-10 rounded-xl font-bold tracking-wide transition-all active:scale-98"
+          onClick={() => reqReply("rejected", reqId)}
+          disabled={isProcessing}
         >
-          Reject
+          {isProcessing ? <span className="loading loading-spinner loading-xs"></span> : "Reject"}
         </button>
+        
+        {/* Accept Interaction Trigger Option Button */}
         <button
-          className="btn  btn-primary"
-          onClick={() => {
-            reqRelpy("accepted", reqId);
-          }}
+          className="btn btn-secondary btn-sm flex-1 h-10 rounded-xl font-bold tracking-wide shadow-md shadow-secondary/10 hover:shadow-secondary/20 text-secondary-content transition-all active:scale-98"
+          onClick={() => reqReply("accepted", reqId)}
+          disabled={isProcessing}
         >
-          Accept
+          {isProcessing ? <span className="loading loading-spinner loading-xs"></span> : "Accept"}
         </button>
       </div>
-    </>
+
+    </div>
   );
 };
 

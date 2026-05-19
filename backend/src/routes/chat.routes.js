@@ -16,17 +16,27 @@ router.get("/chat/:targetUserId", userAuth, async (req, res) => {
     let chat = await Chat.findOne({
       participants: { $all: [userId, targetUserId] },
     }).populate({
-      path: "messages.senderId",
-      select: "firstName lastName photoURL",
-    });
+        path: "participants",
+        select: "firstName lastName photoURL about age gender skills",
+      })
+      .populate({
+        path: "messages.senderId",
+        select: "firstName lastName photoURL",
+      });
 
     if (!chat) {
       chat = new Chat({
         participants: [userId, targetUserId],
         messages: [],
-      });
+      })
       await chat.save();
+      // Populate the newly created document shell right before passing it down to the frontend layout frame
+        chat = await chat.populate({
+          path: "participants",
+          select: "firstName lastName photoURL about age gender skills",
+        });
     }
+
 
     res.json(chat);
   } catch (error) {

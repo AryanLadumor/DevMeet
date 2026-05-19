@@ -1,166 +1,222 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { createSocketConnection } from "../../utils/socket";
 import apiCall from "../../utils/axiosInstance";
 
 const Chat = () => {
   const { targetUserId } = useParams();
-  console.log(targetUserId);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [targetUser, setTargetUser] = useState(null);
+  
   const user = useSelector((store) => store.user.userInfo);
-  // console.log(user._id);
-  const { _id, firstName, lastName, photoURL } = user;
+  const { _id, firstName, lastName, photoURL } = user || {};
   const userId = _id;
 
   const messagesEndRef = useRef(null);
   const socketRef = useRef(null);
 
+  // Maintain a reference to targetUser so socket event listeners can access its freshest state
+  const targetUserRef = useRef(null);
+  useEffect(() => {
+    targetUserRef.current = targetUser;
+  }, [targetUser]);
+
+  // Fetch chat history message entries on initial load
   useEffect(() => {
     const fetchChatMessages = async () => {
-      const chat = await apiCall.get(`chat/${targetUserId}`);
+      try {
+        const chat = await apiCall.get(`chat/${targetUserId}`);
+        
+        // Safely extract and save your connection partner's full populated profile card
+        if (chat.data.participants) {
+          const partner = chat.data.participants.find(p => p._id !== userId);
+          console.log(chat.data.participants)
+          setTargetUser(partner);
+        }
 
-      console.log(chat.data.messages);
+        const chatMessages = chat.data.messages.map((msg) => {
+          const { senderId, text, createdAt } = msg;
+          const date = new Date(createdAt);
+          const hours = String(date.getHours()).padStart(2, "0");
+          const minutes = String(date.getMinutes()).padStart(2, "0");
 
-      const chatMessages = chat.data.messages.map((msg) => {
-        const { senderId, text, createdAt } = msg;
-        const date = new Date(createdAt);
+          // Standardize database structure handles gracefully whether populated or raw string
+          const senderObj = typeof senderId === 'object' ? senderId : {};
+          const currentSenderId = typeof senderId === 'object' ? senderId?._id : senderId;
 
-        const hours = String(date.getHours()).padStart(2, "0");
-        const minutes = String(date.getMinutes()).padStart(2, "0");
+          return {
+            senderId: currentSenderId,
+            firstName: senderObj.firstName,
+            lastName: senderObj.lastName,
+            photoURL: senderObj.photoURL,
+            newMessage: text,
+            createdAt: `${hours}:${minutes}`,
+          };
+        });
 
-        const formatted = `${hours}:${minutes}`;
-
-        return {
-          firstName: senderId?.firstName,
-          lastName: senderId?.lastName,
-          newMessage: text,
-          photoURL: senderId?.photoURL,
-          createdAt: formatted,
-        };
-      });
-
-      setMessages(chatMessages);
+        setMessages(chatMessages);
+      } catch (error) {
+        console.error("Error retrieving conversation records:", error);
+      }
     };
 
-    fetchChatMessages();
-  }, [targetUserId]);
+    if (userId) fetchChatMessages();
+  }, [targetUserId, userId]);
 
+  // Handle active socket connectivity actions
   useEffect(() => {
-    if (!userId) {
-      return;
-    }
-    //creating conection
+    if (!userId) return;
+
     const socket = createSocketConnection();
     socketRef.current = socket;
 
-    //as soon as page load join Caht event is emited
     socketRef.current.emit("joinChat", {
-      fn: user.firstName,
+      fn: firstName,
       userId,
       targetUserId,
     });
 
     socketRef.current.on(
       "messageRecived",
-      ({ firstName, lastName, photoURL, newMessage, createdAt }) => {
-        console.log(firstName, lastName, newMessage, createdAt);
+      ({ firstName: fName, lastName: lName, photoURL: pURL, newMessage: text, createdAt, senderId }) => {
         const date = new Date(createdAt);
-
         const hours = String(date.getHours()).padStart(2, "0");
         const minutes = String(date.getMinutes()).padStart(2, "0");
+        const formattedTime = `${hours}:${minutes}`;
 
-        const formatted = `${hours}:${minutes}`;
+        // CRITICAL FIX: Fallback to cached profile memory states if incoming socket keys are bare strings
+        const isMe = senderId === userId;
+        const fallbackFirstName = isMe ? firstName : (targetUserRef.current?.firstName || fName);
+        const fallbackLastName = isMe ? lastName : (targetUserRef.current?.lastName || lName);
+        const fallbackPhotoURL = isMe ? photoURL : (targetUserRef.current?.photoURL || pURL);
+
         setMessages((prev) => [
           ...prev,
-          { firstName, lastName, photoURL, newMessage, createdAt: formatted },
+          { 
+            senderId,
+            firstName: fallbackFirstName, 
+            lastName: fallbackLastName, 
+            photoURL: fallbackPhotoURL, 
+            newMessage: text, 
+            createdAt: formattedTime 
+          },
         ]);
       },
     );
-    //on unmouting the component close the connection very imp
+
     return () => {
       socketRef.current.disconnect();
     };
-  }, [userId, targetUserId, user.firstName]);
+  }, [userId, targetUserId, firstName, lastName, photoURL]);
 
+  // Smooth scroll pinning mechanism anchor links
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const sendMessage = () => {
+    if (!newMessage.trim()) return;
+
     socketRef.current?.emit("sendMessage", {
       firstName,
       lastName,
       userId,
       photoURL,
       targetUserId,
-      newMessage,
+      newMessage: newMessage.trim(),
       createdAt: new Date(),
     });
     setNewMessage("");
   };
 
   return (
-    <div className="flex flex-col items-center h-screen">
-      <h1 className="p-5 text-2xl">Chat</h1>
-
-      <div className="flex flex-col w-3/7 h-[70vh] border border-gray-500 rounded overflow-hidden">
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-2">
-          {messages.map((msg, i) => {
-            return (
-              <div
-                key={i}
-                className={`chat ${
-                  msg.firstName === firstName ? "chat-end" : "chat-start"
-                }`}
-              >
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img alt="user" src={msg.photoURL} />
-                  </div>
-                </div>
-
-                <div className="chat-header">
-                  {msg.firstName + " " + msg.lastName}
-
-                  <time className="text-xs opacity-50 ml-2">
-                    {msg.createdAt}
-                  </time>
-                </div>
-
-                <div className="chat-bubble">{msg.newMessage}</div>
-              </div>
-            );
-          })}
-
-          {/* Auto Scroll Target */}
-          <div ref={messagesEndRef}></div>
-        </div>
-
-        {/* Input Area */}
-        <div className="border-t border-gray-600 p-2 bg-base-100">
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input flex-1"
-              value={newMessage}
-              onChange={(e) => {
-                setNewMessage(e.target.value);
-              }}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+    <div className="w-full max-w-3xl mx-auto px-2 sm:px-4 py-4 h-[calc(100vh-6rem)] flex flex-col justify-between">
+      
+      {/* Dynamic Conversation Header Bar context panel */}
+      <div className="flex items-center gap-3 bg-base-200 border border-base-300 rounded-2xl p-3 shadow-md shrink-0">
+        <Link to="/connections" className="btn btn-ghost btn-circle btn-sm md:flex hidden items-center justify-center">
+          ‹
+        </Link>
+        <div className="avatar">
+          <div className="w-10 h-10 rounded-full bg-base-300 overflow-hidden">
+            <img 
+              src={targetUser?.photoURL || "https://example.com/default-avatar.png"} 
+              alt="Partner avatar" 
+              className="object-cover w-full h-full"
             />
-
-            <button className="btn btn-secondary" onClick={sendMessage}>
-              Send
-            </button>
           </div>
         </div>
+        <div>
+          <h3 className="font-bold text-sm tracking-tight text-base-content">
+            {targetUser ? `${targetUser.firstName} ${targetUser.lastName || ""}` : "Loading Contact..."}
+          </h3>
+          <span className="text-[10px] text-success font-bold uppercase tracking-wider block mt-0.5">
+            Active Connection Channel
+          </span>
+        </div>
       </div>
+
+      {/* Primary Message Bubble Stream Window */}
+      <div className="flex-1 overflow-y-auto my-4 p-4 bg-base-200/40 border border-base-300/60 rounded-2xl shadow-inner space-y-4">
+        {messages.map((msg, i) => {
+          const isMe = msg.senderId === userId;
+          
+          // Double safeguard data attributes configuration mapping
+          const currentFirstName = isMe ? firstName : (targetUser?.firstName || msg.firstName);
+          const currentLastName = isMe ? lastName : (targetUser?.lastName || msg.lastName);
+          const currentPhotoURL = isMe ? photoURL : (targetUser?.photoURL || msg.photoURL);
+
+          return (
+            <div key={i} className={`chat ${isMe ? "chat-end" : "chat-start"} animate-fadeIn`}>
+              <div className="chat-image avatar">
+                <div className="w-8 h-8 rounded-full bg-base-300 shadow-sm overflow-hidden">
+                  <img 
+                    alt="User avatar" 
+                    src={currentPhotoURL || "https://example.com/default-avatar.png"} 
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              </div>
+
+              <div className="chat-header text-xs text-base-content/40 font-semibold mb-0.5 px-1 flex items-baseline gap-1.5">
+                <span>{currentFirstName} {currentLastName || ""}</span>
+                <time className="text-[10px] font-medium opacity-70">{msg.createdAt}</time>
+              </div>
+
+              <div className={`chat-bubble text-sm font-medium max-w-xs sm:max-w-md leading-relaxed rounded-2xl shadow-sm ${
+                isMe ? "chat-bubble-primary text-primary-content" : "chat-bubble-neutral"
+              }`}>
+                {msg.newMessage}
+              </div>
+            </div>
+          );
+        })}
+        <div ref={messagesEndRef}></div>
+      </div>
+
+      {/* Input Form Action Bar */}
+      <div className="bg-base-200 border border-base-300 rounded-2xl p-2 shadow-lg shrink-0">
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            placeholder="Write a message..."
+            className="input w-full h-11 bg-base-100/60 focus:bg-base-100 font-medium rounded-xl text-sm px-4 focus:border-secondary transition-all"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          />
+
+          <button 
+            className="btn btn-secondary h-11 px-5 rounded-xl font-bold tracking-wide shadow-md shadow-secondary/10 hover:shadow-secondary/20 transition-all duration-200" 
+            onClick={sendMessage}
+          >
+            Send
+          </button>
+        </div>
+      </div>
+
     </div>
   );
 };
