@@ -169,7 +169,7 @@ const Chat = () => {
           const currentPhotoURL = isMe ? photoURL : (targetUser?.photoURL || msg.photoURL);
 
           return (
-            <div key={i} className={`chat ${isMe ? "chat-end" : "chat-start"} animate-fadeIn`}>
+            <div key={i} className={`chat ${isMe ? "chat-start" : "chat-end"} animate-fadeIn`}>
               <div className="chat-image avatar">
                 <div className="w-8 h-8 rounded-full bg-base-300 shadow-sm overflow-hidden">
                   <img 
