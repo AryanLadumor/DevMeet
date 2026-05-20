@@ -2,6 +2,7 @@ const socket = require("socket.io");
 const crypto = require("crypto");
 const Chat = require("../models/Chat");
 const ConnectionRequest = require("../models/ConnectionRequest");
+const { SocketAddress } = require("net");
 
 const getSecretRoomId = ({ userId, targetUserId }) => {
   return crypto
@@ -63,22 +64,9 @@ const initializeSocket = (server) => {
             { upsert: true, new: true },
           );
 
-          //if chat not found then create new one
-          if (!chat) {
-            chat = new Chat({
-              participants: [userId, targetUserId],
-              messages: [],
-            });
-          }
 
-          chat.messages.push({
-            senderId: userId,
-            text: newMessage,
-          });
-
-          await chat.save();
-
-          io.to(roomId).emit("messageRecived", {
+          socket.to(roomId).emit("messageRecived", {
+            senderId : userId,
             firstName,
             lastName,
             photoURL,

@@ -80,26 +80,24 @@ const Chat = () => {
 
     socketRef.current.on(
       "messageRecived",
-      ({ firstName: fName, lastName: lName, photoURL: pURL, newMessage: text, createdAt, senderId }) => {
+      ({ senderId , firstName, lastName, photoURL, newMessage, createdAt }) => {
         const date = new Date(createdAt);
         const hours = String(date.getHours()).padStart(2, "0");
         const minutes = String(date.getMinutes()).padStart(2, "0");
         const formattedTime = `${hours}:${minutes}`;
 
-        // CRITICAL FIX: Fallback to cached profile memory states if incoming socket keys are bare strings
-        const isMe = senderId === userId;
-        const fallbackFirstName = isMe ? firstName : (targetUserRef.current?.firstName || fName);
-        const fallbackLastName = isMe ? lastName : (targetUserRef.current?.lastName || lName);
-        const fallbackPhotoURL = isMe ? photoURL : (targetUserRef.current?.photoURL || pURL);
-
+      
+        
+        
+        console.log(firstName,lastName,newMessage)
         setMessages((prev) => [
           ...prev,
           { 
             senderId,
-            firstName: fallbackFirstName, 
-            lastName: fallbackLastName, 
-            photoURL: fallbackPhotoURL, 
-            newMessage: text, 
+            firstName,
+            lastName,
+            photoURL,
+            newMessage, 
             createdAt: formattedTime 
           },
         ]);
@@ -119,16 +117,33 @@ const Chat = () => {
   const sendMessage = () => {
     if (!newMessage.trim()) return;
 
-    socketRef.current?.emit("sendMessage", {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+
+  // ✅ Optimistically add to local state
+  setMessages((prev) => [
+    ...prev,
+    {
+      senderId: userId,
       firstName,
       lastName,
-      userId,
       photoURL,
-      targetUserId,
       newMessage: newMessage.trim(),
-      createdAt: new Date(),
-    });
-    setNewMessage("");
+      createdAt: `${hours}:${minutes}`,
+    },
+  ]);
+
+  socketRef.current?.emit("sendMessage", {
+    firstName,
+    lastName,
+    userId,
+    photoURL,
+    targetUserId,
+    newMessage: newMessage.trim(),
+    createdAt: now,
+  });
+  setNewMessage("");
   };
 
   return (
@@ -169,7 +184,7 @@ const Chat = () => {
           const currentPhotoURL = isMe ? photoURL : (targetUser?.photoURL || msg.photoURL);
 
           return (
-            <div key={i} className={`chat ${isMe ? "chat-start" : "chat-end"} animate-fadeIn`}>
+            <div key={i} className={`chat ${isMe ? "chat-end" : "chat-start"} animate-fadeIn`}>
               <div className="chat-image avatar">
                 <div className="w-8 h-8 rounded-full bg-base-300 shadow-sm overflow-hidden">
                   <img 
