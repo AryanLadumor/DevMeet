@@ -7,7 +7,7 @@ const Footer = () => {
         <aside className="flex items-center gap-2">
           <p>
             &copy; {new Date().getFullYear()}{" "}
-            <span className="font-serif font-black text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text ml-1">
+            <span className="font-serif font-black text-transparent bg-linear-to-r from-primary to-secondary bg-clip-text ml-1">
               DevMeet
             </span>
             . All rights reserved.

@@ -8,6 +8,7 @@ import ConnectionsPage from "./pages/ConnectionsPage";
 import RequestsPage from "./pages/RequestsPage";
 import Register from "./components/Auth/Register";
 import Chat from "./components/chat/Chat";
+import Premium from "./components/premium/Premium";
 
 function App() {
   return (
@@ -60,6 +61,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Chat />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/premium"
+              element={
+                <ProtectedRoute>
+                  <Premium />
                 </ProtectedRoute>
               }
             />

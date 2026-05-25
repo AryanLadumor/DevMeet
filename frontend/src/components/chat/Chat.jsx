@@ -39,7 +39,7 @@ const Chat = () => {
         const chatMessages = chat.data.messages.map((msg) => {
           const { senderId, text, createdAt } = msg;
           const date = new Date(createdAt);
-          const hours = String(date.getHours()).padStart(2, "0");
+          const hours = String(date.getHour+s()).padStart(2, "0");
           const minutes = String(date.getMinutes()).padStart(2, "0");
 
           // Standardize database structure handles gracefully whether populated or raw string

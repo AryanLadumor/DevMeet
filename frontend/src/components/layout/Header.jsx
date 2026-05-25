@@ -27,7 +27,7 @@ const Header = () => {
   if (!userInfo) {
     return (
       <header className="navbar bg-base-100 border-b border-base-200 sticky top-0 z-50 justify-center h-16 transition-all duration-300">
-        <span className="font-serif font-black text-2xl tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent animate-subtle-pulse">
+        <span className="font-serif font-black text-2xl tracking-tight bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent animate-subtle-pulse">
           DevMeet
         </span>
       </header>
@@ -42,7 +42,7 @@ const Header = () => {
       <div className="flex-1">
         <Link
           to="/"
-          className="font-serif font-black text-2xl tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+          className="font-serif font-black text-2xl tracking-tight bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent hover:opacity-80 transition-opacity"
         >
           DevMeet
         </Link>
@@ -149,6 +149,15 @@ const Header = () => {
                 <span className="badge badge-sm badge-secondary font-bold tracking-wide scale-90">
                   New
                 </span>
+              </Link>
+            </li>
+
+            <li className="md:block">
+              <Link
+                to="/premium"
+                className={`flex justify-between items-center ${isActive("/profile") ? "bg-primary/10 text-primary font-semibold" : ""}`}
+              >
+                Premium
               </Link>
             </li>
 
