@@ -28,7 +28,7 @@ const Premium = () => {
     };
 
     //we added script in index.html so Razorpay is attached to window object
-    const rzp = new window.Razorpay(options); 
+    const rzp = new window.Razorpay(options);
     rzp.open();
   };
 
@@ -50,28 +50,28 @@ const Premium = () => {
         <div className="text-4xl text-gray-500">
           <i className="ti ti-medal" />
         </div>
+
         <h2
           className="font-bold text-2xl text-gray-900"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           Silver Membership
         </h2>
+
         <p className="text-sm text-gray-600">
-          3-month plan — perfect for getting started
+          15 day plan — perfect for getting started
         </p>
         <div className="divider my-0 border-black/10" />
         <ul className="flex flex-col gap-3 flex-1 text-sm text-gray-800">
-          <li className="flex gap-2">
-            <i className="ti ti-messages" /> Chat with your connections
-          </li>
+         
           <li className="flex gap-2">
             <i className="ti ti-send" /> 50 requests per day
           </li>
           <li className="flex gap-2">
-            <i className="ti ti-rosette" /> Silver tick on your profile
+            <i className="ti ti-rosette" /> Silver badge on your profile
           </li>
           <li className="flex gap-2">
-            <i className="ti ti-calendar" /> Valid for 3 months
+            <i className="ti ti-calendar" /> Valid for 15 days
           </li>
         </ul>
         <button
@@ -81,7 +81,7 @@ const Premium = () => {
             handleBuyPremium("silver");
           }}
         >
-          Buy Silver Membership
+          Buy Silver Membership - ₹299
         </button>
       </div>
 
@@ -104,28 +104,28 @@ const Premium = () => {
         <div className="text-4xl text-amber-900">
           <i className="ti ti-crown" />
         </div>
+
         <h2
           className="font-bold text-2xl text-amber-950"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           Gold Membership
         </h2>
+
         <p className="text-sm text-amber-800">
-          6-month plan — our best value offer
+          1 month plan — our best value offer
         </p>
         <div className="divider my-0 border-black/10" />
         <ul className="flex flex-col gap-3 flex-1 text-sm text-amber-950">
-          <li className="flex gap-2">
-            <i className="ti ti-messages" /> Chat with your connections
-          </li>
+         
           <li className="flex gap-2">
             <i className="ti ti-infinity" /> Unlimited requests per day
           </li>
           <li className="flex gap-2">
-            <i className="ti ti-rosette" /> Gold tick on your profile
+            <i className="ti ti-rosette" /> Gold badge on your profile
           </li>
           <li className="flex gap-2">
-            <i className="ti ti-calendar" /> Valid for 6 months
+            <i className="ti ti-calendar" /> Valid for 1 months
           </li>
         </ul>
         <button
@@ -137,7 +137,7 @@ const Premium = () => {
             handleBuyPremium("gold");
           }}
         >
-          Buy Gold Membership
+          Buy Gold Membership - ₹699
         </button>
       </div>
     </div>
