@@ -54,10 +54,10 @@ router.post("/request/send/:status/:UserId", userAuth, async (req, res) => {
     const emailObj = {
       msg : "Connection Request sent successfull to",
       subject : "Request Sended",
-      text : "YOUhave succeffuly send request",
+      text : "You have succeffuly send request",
     }
     const emailResponse = await sendEmail.run(emailObj);
-    console.log(emailResponse);
+   
 
     res.json({
       msg : emailObj.msg ,
