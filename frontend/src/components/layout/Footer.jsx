@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Add this import
 
 const Footer = () => {
   return (
@@ -14,31 +15,20 @@ const Footer = () => {
           </p>
         </aside>
 
+        {/* Change these from <a> tags to <Link to="..."> tags */}
         <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs tracking-wide uppercase font-semibold">
-          <a
-            href="#"
-            className="hover:text-primary transition-colors duration-200"
-          >
+          <Link to="/about" className="hover:text-primary transition-colors duration-200">
             About
-          </a>
-          <a
-            href="#"
-            className="hover:text-primary transition-colors duration-200"
-          >
+          </Link>
+          <Link to="/privacy" className="hover:text-primary transition-colors duration-200">
             Privacy Policy
-          </a>
-          <a
-            href="#"
-            className="hover:text-primary transition-colors duration-200"
-          >
+          </Link>
+          <Link to="/terms" className="hover:text-primary transition-colors duration-200">
             Terms of Service
-          </a>
-          <a
-            href="#"
-            className="hover:text-primary transition-colors duration-200"
-          >
+          </Link>
+          <Link to="/support" className="hover:text-primary transition-colors duration-200">
             Support
-          </a>
+          </Link>
         </nav>
       </div>
     </footer>

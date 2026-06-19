@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import apiCall from "../../utils/axiosInstance";
 const Premium = () => {
+  const [isUserPremium, setIsUserPremium] = useState(false);
+
+  useEffect(() => {
+    const verifyPremiumUser = async () => {
+      const res = await apiCall.get("/premium/verify");
+
+      if (res.data.isPremium) {
+        setIsUserPremium(true);
+      }
+    };
+    verifyPremiumUser();
+  }, []);
+
   const handleBuyPremium = async (type) => {
     const order = await apiCall.post("/payment/create", {
       membershipType: type,
@@ -32,8 +45,10 @@ const Premium = () => {
     rzp.open();
   };
 
-  return (
+  return isUserPremium? (<div>You are Already a Premium User</div>) :   (
     <div className="flex flex-col lg:flex-row gap-6 p-8 items-stretch">
+
+  
       {/* Silver */}
       <div
         className="card flex-1 rounded-2xl p-8 flex flex-col gap-4 border border-[#aaaaaa]"
@@ -63,7 +78,6 @@ const Premium = () => {
         </p>
         <div className="divider my-0 border-black/10" />
         <ul className="flex flex-col gap-3 flex-1 text-sm text-gray-800">
-         
           <li className="flex gap-2">
             <i className="ti ti-send" /> 50 requests per day
           </li>
@@ -117,7 +131,6 @@ const Premium = () => {
         </p>
         <div className="divider my-0 border-black/10" />
         <ul className="flex flex-col gap-3 flex-1 text-sm text-amber-950">
-         
           <li className="flex gap-2">
             <i className="ti ti-infinity" /> Unlimited requests per day
           </li>
@@ -140,6 +153,8 @@ const Premium = () => {
           Buy Gold Membership - ₹699
         </button>
       </div>
+
+
     </div>
   );
 };

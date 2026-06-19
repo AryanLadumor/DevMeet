@@ -10,16 +10,20 @@ import Register from "./components/Auth/Register";
 import Chat from "./components/chat/Chat";
 import Premium from "./components/premium/Premium";
 
+import AboutPage from "./pages/AboutPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsPage from "./pages/TermsPage";
+import SupportPage from "./pages/SupportPage";
+
 function App() {
   return (
     <>
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} /> 
+          <Route path="/login" element={<Login />} />
 
           <Route path="/" element={<Body />}>
-
             <Route
               path="/"
               element={
@@ -74,8 +78,12 @@ function App() {
               }
             />
 
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/support" element={<SupportPage />} />
 
-
+            
           </Route>
         </Routes>
       </BrowserRouter>
