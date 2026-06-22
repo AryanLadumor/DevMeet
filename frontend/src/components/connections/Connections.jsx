@@ -30,11 +30,13 @@ const Connections = () => {
   // Empty State Fallback View Panel
   if (userConnections.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center text-center min-h-[50vh] w-full max-w-md mx-auto px-4">
-        <div className="text-5xl mb-4">🤝</div>
-        <h3 className="text-xl font-bold text-base-content">No Connections Yet</h3>
-        <p className="text-sm text-base-content/60 mt-2 leading-relaxed">
-          Keep exploring the discovery feed! Like and connect with local developers to build your network.
+      <div className="flex flex-col items-center justify-center text-center min-h-[50vh] w-full max-w-md mx-auto px-4 py-8 animate-fadeIn">
+        <div className="w-20 h-20 rounded-full bg-base-200 flex items-center justify-center shadow-lg border border-base-300 mb-6 text-4xl" aria-hidden="true">
+          🤝
+        </div>
+        <h3 className="text-2xl font-serif font-black text-base-content">No Connections Yet</h3>
+        <p className="text-sm text-base-content/60 mt-3 leading-relaxed">
+          Keep exploring the discover feed! Connect with local developers to start building your tech network.
         </p>
       </div>
     );

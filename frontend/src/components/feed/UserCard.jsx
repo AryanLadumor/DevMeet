@@ -55,7 +55,7 @@ const UserCard = ({ user }) => {
   // Dynamic classes for hardware-accelerated card movements
   const getCardClasses = () => {
     const base =
-      "card w-full max-w-sm bg-base-200 border border-base-300 shadow-2xl overflow-hidden transition-all duration-300 ease-out";
+      "card w-full max-w-sm bg-base-200 border border-base-300 shadow-2xl overflow-hidden transition-[transform,opacity,box-shadow] duration-300 ease-out motion-reduce:transition-none";
     if (cardState === "enter")
       return `${base} opacity-0 translate-y-8 scale-95`;
     if (cardState === "swipe-left")
@@ -72,9 +72,11 @@ const UserCard = ({ user }) => {
         <div className="relative h-1/2 w-full bg-base-300 shrink-0">
           <img
             src={photoURL || "https://example.com/default-avatar.png"}
-            alt={`${firstName}'s avatar`}
+            alt={`Developer profile avatar of ${firstName}`}
             className="w-full h-full object-cover select-none pointer-events-none"
             loading="eager"
+            width="384"
+            height="270"
           />
 
           {/* Subtle gradient scrim over picture for visual depth */}
@@ -85,7 +87,7 @@ const UserCard = ({ user }) => {
             <span
               className={`badge ${emblem.style} font-bold tracking-wide shadow-md px-2.5 py-1 text-xs gap-1`}
             >
-              {emblem.icon} {gender || "Developer"}
+              <span aria-hidden="true">{emblem.icon}</span> {gender || "Developer"}
             </span>
             <span className="badge bg-neutral text-neutral-content font-black tracking-wide shadow-md px-3 py-1 text-xs">
               {age || "—"} YRS
@@ -95,14 +97,14 @@ const UserCard = ({ user }) => {
           {/* Swiping Status Stamps */}
           {cardState === "swipe-left" && (
             <div className="absolute inset-0 bg-error/20 flex items-center justify-center backdrop-blur-xs z-20 transition-all duration-200 animate-pulse">
-              <span className="border-4 border-error text-error font-black tracking-widest uppercase text-3xl px-6 py-2 rounded-xl rotate-[-12deg]">
+              <span className="border-4 border-error text-error font-black tracking-widest uppercase text-3xl px-6 py-2 rounded-xl rotate-[-12deg]" role="status">
                 Pass
               </span>
             </div>
           )}
           {cardState === "swipe-right" && (
             <div className="absolute inset-0 bg-success/20 flex items-center justify-center backdrop-blur-xs z-20 transition-all duration-200 animate-pulse">
-              <span className="border-4 border-success text-success font-black tracking-widest uppercase text-3xl px-6 py-2 rounded-xl rotate-[12deg]">
+              <span className="border-4 border-success text-success font-black tracking-widest uppercase text-3xl px-6 py-2 rounded-xl rotate-[12deg]" role="status">
                 Connect
               </span>
             </div>
@@ -110,32 +112,32 @@ const UserCard = ({ user }) => {
         </div>
 
         {/* Profile Details Section */}
-        <div className="card-body p-5 flex flex-col justify-between h-1/2 bg-base-200">
-          <div>
+        <div className="card-body p-5 flex flex-col justify-between h-1/2 bg-base-200 min-w-0">
+          <div className="min-w-0">
             {/* Identity Title Heading */}
-            <h3 className="text-xl font-bold tracking-tight text-base-content flex items-baseline gap-1.5 truncate">
-              <span>{firstName}</span>
+            <h3 className="text-xl font-bold tracking-tight text-base-content flex items-baseline gap-1.5 min-w-0">
+              <span className="truncate">{firstName}</span>
               {lastName && (
-                <span className="font-serif italic font-normal text-base-content/60 text-lg">
+                <span className="font-serif italic font-normal text-base-content/60 text-lg truncate">
                   {lastName}
                 </span>
               )}
             </h3>
 
             {/* Profile Bio Description */}
-            <p className="text-sm text-base-content/70 mt-2 line-clamp-3 leading-relaxed font-medium min-h-[4.25rem]">
+            <p className="text-sm text-base-content/70 mt-2 line-clamp-3 leading-relaxed font-medium min-h-[4.25rem] break-words">
               {about || "No biography provided yet."}
             </p>
           </div>
 
           {/* Technical Skills Array */}
-          <div className="mt-2">
+          <div className="mt-2 min-w-0">
             <div className="flex flex-wrap gap-1.5 overflow-hidden max-h-[2rem]">
               {skills && skills.length > 0 ? (
                 skills.slice(0, 4).map((skill, index) => (
                   <span
                     key={index}
-                    className="badge badge-sm bg-base-300 text-base-content/80 border-base-300 font-bold uppercase tracking-wider text-[10px]"
+                    className="badge badge-sm bg-base-300 text-base-content/80 border-base-300 font-bold uppercase tracking-wider text-[10px] truncate"
                   >
                     {skill}
                   </span>
@@ -154,14 +156,14 @@ const UserCard = ({ user }) => {
             <button
               onClick={() => handleAction("ignored")}
               disabled={!!loadingAction}
-              className="btn btn-outline btn-error flex-1 h-12 rounded-xl font-bold tracking-wide transition-all group hover:bg-error hover:text-error-content active:scale-98"
-              aria-label="Pass on profile"
+              className="btn btn-outline btn-error flex-1 h-12 rounded-xl font-bold tracking-wide transition-[background-color,color,border-color,transform] duration-200 group hover:bg-error hover:text-error-content active:scale-98 focus-visible:ring-2 focus-visible:ring-error/50"
+              aria-label={`Pass on ${firstName}`}
             >
               {loadingAction === "ignored" ? (
-                <span className="loading loading-spinner loading-sm"></span>
+                <span className="loading loading-spinner loading-sm" aria-hidden="true"></span>
               ) : (
-                <span className="flex items-center gap-1">
-                  <span className="text-lg transition-transform group-hover:scale-110">
+                <span className="flex items-center justify-center gap-1.5">
+                  <span className="text-lg transition-transform duration-200 group-hover:scale-110" aria-hidden="true">
                     ✕
                   </span>{" "}
                   Pass
@@ -173,15 +175,15 @@ const UserCard = ({ user }) => {
             <button
               onClick={() => handleAction("interested")}
               disabled={!!loadingAction}
-              className="btn btn-primary flex-1 h-12 rounded-xl font-bold tracking-wide shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all group active:scale-98"
-              aria-label="Connect with developer"
+              className="btn btn-primary flex-1 h-12 rounded-xl font-bold tracking-wide shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-[background-color,color,border-color,transform,box-shadow] duration-200 group active:scale-98 focus-visible:ring-2 focus-visible:ring-primary/50"
+              aria-label={`Connect with ${firstName}`}
             >
               {loadingAction === "interested" ? (
-                <span className="loading loading-spinner loading-sm"></span>
+                <span className="loading loading-spinner loading-sm" aria-hidden="true"></span>
               ) : (
-                <span className="flex items-center gap-1 text-primary-content">
+                <span className="flex items-center justify-center gap-1.5 text-primary-content">
                   Connect{" "}
-                  <span className="text-base transition-transform group-hover:translate-x-0.5">
+                  <span className="text-base transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
                     ✦
                   </span>
                 </span>

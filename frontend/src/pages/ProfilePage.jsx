@@ -43,7 +43,7 @@ const ProfilePage = () => {
           </span>
           
           {/* Card Container constraints */}
-          <div className="w-full max-w-sm shadow-2xl rounded-2xl overflow-hidden border border-base-300/40">
+          <div className="w-full max-w-sm shrink-0">
             <ProfileCardPreview user={parsedPreviewUser} />
           </div>
         </div>

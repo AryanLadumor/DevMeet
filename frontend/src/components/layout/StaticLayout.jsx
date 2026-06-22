@@ -6,13 +6,13 @@ const StaticLayout = ({ title, badge, children }) => {
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 animate-fadeIn">
       {/* Top Breadcrumb Navigation */}
       <div className="mb-6 border-b border-base-300 pb-5">
-        <Link 
-          to="/" 
+        <Link
+          to="/"
           className="text-xs font-bold text-primary uppercase tracking-widest hover:text-primary-focus transition-colors flex items-center gap-1.5"
         >
           <span>‹</span> Back to Discover Feed
         </Link>
-        
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-4">
           <h1 className="text-3xl font-serif font-black tracking-tight text-base-content">
             {title}

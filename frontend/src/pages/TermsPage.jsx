@@ -6,8 +6,8 @@ const TermsPage = () => {
     <StaticLayout title="Terms of Service" badge="Operational Rules">
       <div className="space-y-4">
         <h3 className="text-lg font-bold text-base-content tracking-tight">1. Usage & Minimum Eligibility</h3>
-        <p>
-          By creating an account registry on DevMeet, you declare that you meet our schema requirements of being at least 18 years of age and intend to discover and interact with local development clusters for lawful purposes.
+        <p className="italic">
+          By creating an account registry on Partner, you declare that you meet our schema requirements of being at least 18 years of age and intend to discover and interact with local development clusters for lawful purposes.
         </p>
 
         <h3 className="text-lg font-bold text-base-content tracking-tight pt-2">2. Connection Request Constraints</h3>

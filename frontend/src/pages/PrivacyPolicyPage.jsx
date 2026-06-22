@@ -6,7 +6,7 @@ const PrivacyPolicyPage = () => {
     <StaticLayout title="Privacy Policy" badge="Last Updated: June 2026">
       <div className="space-y-4">
         <p className="italic">
-          DevMeet is an open-source educational engineering project. No personal identifiers or data entries are utilized for commercial profiling or shared with third-party tracking networks.
+          Partner is an open-source educational engineering project. No personal identifiers or data entries are utilized for commercial profiling or shared with third-party tracking networks.
         </p>
 
         <h3 className="text-lg font-bold text-base-content tracking-tight pt-2">1. Data Collected & Stored</h3>

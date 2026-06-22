@@ -38,7 +38,7 @@ const EditProfile = ({ user }) => {
         ...(age && { age: Number(age) }),
         ...(gender && { gender }),
       });
-      
+
       setMsgText(res.data.msg || "Profile updated successfully!");
       setToastType("success");
       setTimeout(() => setToastType(null), 3000);
@@ -64,11 +64,15 @@ const EditProfile = ({ user }) => {
           {/* Grid splitting first/last name fields across breakpoints */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="form-control">
-              <label className="label py-1 px-0.5">
+              <label htmlFor="first-name" className="label py-1 px-0.5">
                 <span className="label-text text-xs font-bold uppercase text-base-content/60 tracking-wider">First Name *</span>
               </label>
               <input
+                id="first-name"
+                name="firstName"
                 type="text"
+                autoComplete="given-name"
+                spellCheck={false}
                 placeholder="First Name"
                 className="input input-bordered w-full h-11 bg-base-100/40 focus:bg-base-100 font-medium rounded-xl text-sm"
                 value={firstName}
@@ -78,11 +82,15 @@ const EditProfile = ({ user }) => {
             </div>
 
             <div className="form-control">
-              <label className="label py-1 px-0.5">
+              <label htmlFor="last-name" className="label py-1 px-0.5">
                 <span className="label-text text-xs font-bold uppercase text-base-content/60 tracking-wider">Last Name</span>
               </label>
               <input
+                id="last-name"
+                name="lastName"
                 type="text"
+                autoComplete="family-name"
+                spellCheck={false}
                 placeholder="Last Name"
                 className="input input-bordered w-full h-11 bg-base-100/40 focus:bg-base-100 font-medium rounded-xl text-sm"
                 value={lastName}
@@ -95,10 +103,12 @@ const EditProfile = ({ user }) => {
           {/* Split grid row capturing age selector fields and gender radio cards layout parameters */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
             <div className="form-control">
-              <label className="label py-1 px-0.5">
+              <label htmlFor="age" className="label py-1 px-0.5">
                 <span className="label-text text-xs font-bold uppercase text-base-content/60 tracking-wider">Age (18 - 55)</span>
               </label>
               <input
+                id="age"
+                name="age"
                 type="number"
                 placeholder="Age"
                 min="18"
@@ -112,8 +122,9 @@ const EditProfile = ({ user }) => {
 
             <div className="form-control h-11 justify-center bg-base-100/30 border border-base-300 rounded-xl px-4">
               <div className="flex justify-around gap-2">
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-bold uppercase tracking-wider text-base-content/70">
+                <label htmlFor="gender-male" className="flex items-center gap-2 cursor-pointer text-xs font-bold uppercase tracking-wider text-base-content/70">
                   <input
+                    id="gender-male"
                     type="radio"
                     name="profile-gender"
                     className="radio radio-primary radio-sm"
@@ -125,8 +136,9 @@ const EditProfile = ({ user }) => {
                   Male
                 </label>
 
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-bold uppercase tracking-wider text-base-content/70">
+                <label htmlFor="gender-female" className="flex items-center gap-2 cursor-pointer text-xs font-bold uppercase tracking-wider text-base-content/70">
                   <input
+                    id="gender-female"
                     type="radio"
                     name="profile-gender"
                     className="radio radio-secondary radio-sm"
@@ -143,12 +155,14 @@ const EditProfile = ({ user }) => {
 
           {/* Avatar URL Field container block */}
           <div className="form-control">
-            <label className="label py-1 px-0.5">
+            <label htmlFor="photo-url" className="label py-1 px-0.5">
               <span className="label-text text-xs font-bold uppercase text-base-content/60 tracking-wider">Profile Photo URL</span>
             </label>
             <input
+              id="photo-url"
+              name="photoURL"
               type="url"
-              placeholder="https://example.com/avatar.png"
+              placeholder="https://example.com/avatar.png…"
               className="input input-bordered w-full h-11 bg-base-100/40 focus:bg-base-100 font-medium rounded-xl text-sm"
               value={photoURL}
               onChange={(e) => setPhotoURL(e.target.value)}
@@ -158,12 +172,14 @@ const EditProfile = ({ user }) => {
 
           {/* Core Stack Skill Sets list tags inputs block */}
           <div className="form-control">
-            <label className="label py-1 px-0.5">
+            <label htmlFor="skills" className="label py-1 px-0.5">
               <span className="label-text text-xs font-bold uppercase text-base-content/60 tracking-wider">Skills (Comma Separated)</span>
             </label>
             <input
+              id="skills"
+              name="skills"
               type="text"
-              placeholder="React, Node, TypeScript, MLOps"
+              placeholder="React, Node, TypeScript, MLOps…"
               className="input input-bordered w-full h-11 bg-base-100/40 focus:bg-base-100 font-medium rounded-xl text-sm"
               value={skills}
               onChange={(e) => setSkills(e.target.value)}
@@ -173,11 +189,13 @@ const EditProfile = ({ user }) => {
 
           {/* Biography About Box Controller input block */}
           <div className="form-control">
-            <label className="label py-1 px-0.5">
+            <label htmlFor="biography" className="label py-1 px-0.5">
               <span className="label-text text-xs font-bold uppercase text-base-content/60 tracking-wider">Biography</span>
             </label>
             <textarea
-              placeholder="Tell other local developers about your background, projects, or stack interests..."
+              id="biography"
+              name="about"
+              placeholder="Tell other local developers about your background, projects, or stack interests…"
               className="textarea textarea-bordered w-full h-24 bg-base-100/40 focus:bg-base-100 font-medium rounded-xl p-3 text-sm leading-relaxed"
               value={about}
               onChange={(e) => setAbout(e.target.value)}
@@ -189,10 +207,10 @@ const EditProfile = ({ user }) => {
           <div className="form-control pt-4">
             <button
               type="submit"
-              className="btn btn-warning w-full h-11 rounded-xl text-sm font-bold tracking-wide shadow-lg shadow-warning/10 transition-all duration-200"
+              className="btn btn-warning w-full h-11 rounded-xl text-sm font-bold tracking-wide shadow-lg shadow-warning/10 transition-[background-color,color,border-color,transform,box-shadow] duration-200 focus-visible:ring-2 focus-visible:ring-warning/50 text-warning-content"
               disabled={loading}
             >
-              {loading ? <span className="loading loading-spinner"></span> : "Save Profile Details"}
+              {loading ? <span className="loading loading-spinner" aria-hidden="true"></span> : "Save Profile Details"}
             </button>
           </div>
         </form>

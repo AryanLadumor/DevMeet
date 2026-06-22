@@ -45,116 +45,119 @@ const Premium = () => {
     rzp.open();
   };
 
-  return isUserPremium? (<div>You are Already a Premium User</div>) :   (
-    <div className="flex flex-col lg:flex-row gap-6 p-8 items-stretch">
-
-  
-      {/* Silver */}
+  return isUserPremium ? (
+    <div className="flex flex-col items-center justify-center text-center min-h-[50vh] w-full max-w-md mx-auto px-4 py-8 animate-fadeIn">
+      <div className="w-20 h-20 rounded-full bg-success/15 border border-success/30 flex items-center justify-center shadow-lg mb-6 text-4xl" aria-hidden="true">
+        👑
+      </div>
+      <h3 className="text-2xl font-serif font-black text-base-content">Premium Active</h3>
+      <p className="text-sm text-base-content/60 mt-3 leading-relaxed">
+        You are already a premium cluster member. Thank you for supporting Partner!
+      </p>
+    </div>
+  ) : (
+    <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-8 items-stretch w-full max-w-5xl mx-auto">
+      {/* Silver Plan Card */}
       <div
-        className="card flex-1 rounded-2xl p-8 flex flex-col gap-4 border border-[#aaaaaa]"
-        style={{
-          background:
-            "linear-gradient(145deg, #e8e8e8 0%, #c8c8c8 30%, #f0f0f0 50%, #b0b0b0 70%, #d8d8d8 100%)",
-          boxShadow:
-            "0 4px 24px rgba(160,160,160,0.25), inset 0 1px 0 rgba(255,255,255,0.6)",
-        }}
+        className="card flex-1 bg-base-200 border border-base-300 shadow-xl hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 p-6 sm:p-8 flex flex-col gap-5 rounded-2xl relative overflow-hidden"
       >
-        <span className="badge text-xs tracking-widest uppercase bg-white/40 text-gray-600 border border-gray-300">
-          Silver
-        </span>
-        <div className="text-4xl text-gray-500">
-          <i className="ti ti-medal" />
+        {/* Subtle decorative background glow */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-base-content/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="flex justify-between items-start">
+          <span className="badge badge-neutral font-bold tracking-widest uppercase text-[10px] px-2.5 py-1">
+            Silver Plan
+          </span>
+          <div className="text-3xl text-base-content/60" aria-hidden="true">
+            🥈
+          </div>
         </div>
 
-        <h2
-          className="font-bold text-2xl text-gray-900"
-          style={{ fontFamily: "'Playfair Display', serif" }}
-        >
-          Silver Membership
-        </h2>
+        <div>
+          <h2 className="font-serif font-black text-2xl text-base-content tracking-tight">
+            Silver Membership
+          </h2>
+          <p className="text-sm text-base-content/60 mt-1 font-medium">
+            15 day plan — perfect for getting started
+          </p>
+        </div>
 
-        <p className="text-sm text-gray-600">
-          15 day plan — perfect for getting started
-        </p>
-        <div className="divider my-0 border-black/10" />
-        <ul className="flex flex-col gap-3 flex-1 text-sm text-gray-800">
-          <li className="flex gap-2">
-            <i className="ti ti-send" /> 50 requests per day
+        <div className="divider my-0 border-base-300" />
+
+        <ul className="flex flex-col gap-3.5 flex-1 text-sm text-base-content/80 font-medium">
+          <li className="flex items-center gap-2.5">
+            <span className="text-success font-bold text-lg" aria-hidden="true">✓</span> 50 connection requests per day
           </li>
-          <li className="flex gap-2">
-            <i className="ti ti-rosette" /> Silver badge on your profile
+          <li className="flex items-center gap-2.5">
+            <span className="text-success font-bold text-lg" aria-hidden="true">✓</span> Silver badge visible on profile
           </li>
-          <li className="flex gap-2">
-            <i className="ti ti-calendar" /> Valid for 15 days
+          <li className="flex items-center gap-2.5">
+            <span className="text-success font-bold text-lg" aria-hidden="true">✓</span> Valid for 15 days
           </li>
         </ul>
-        <button
-          className="btn w-full mt-4 text-gray-100 border-none font-semibold"
-          style={{ background: "linear-gradient(135deg, #555 0%, #333 100%)" }}
-          onClick={() => {
-            handleBuyPremium("silver");
-          }}
-        >
-          Buy Silver Membership - ₹299
-        </button>
+
+        <div className="mt-4 pt-2">
+          <button
+            className="btn btn-neutral w-full h-12 rounded-xl font-bold tracking-wide shadow-lg shadow-neutral/10 hover:shadow-neutral/20 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-neutral/50"
+            onClick={() => handleBuyPremium("silver")}
+          >
+            Buy Silver - ₹299
+          </button>
+        </div>
       </div>
 
-      {/* Gold */}
+      {/* Gold Plan Card */}
       <div
-        className="card flex-1 rounded-2xl p-8 flex flex-col gap-4 border-2 border-amber-700 relative"
-        style={{
-          background:
-            "linear-gradient(145deg, #fde68a 0%, #f59e0b 30%, #fbbf24 50%, #d97706 70%, #fde68a 100%)",
-          boxShadow:
-            "0 4px 28px rgba(217,119,6,0.35), inset 0 1px 0 rgba(255,255,255,0.5)",
-        }}
+        className="card flex-1 bg-base-200 border-2 border-primary shadow-xl hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 p-6 sm:p-8 flex flex-col gap-5 rounded-2xl relative overflow-hidden"
       >
-        <span className="absolute top-4 right-4 badge text-xs tracking-widest uppercase bg-black/20 text-white border-none">
+        {/* Subtle decorative glow overlay */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+
+        <span className="absolute top-3 right-3 badge badge-primary font-bold text-[9px] tracking-widest uppercase py-1 px-2.5 shadow-md">
           Most Popular
         </span>
-        <span className="badge text-xs tracking-widest uppercase bg-white/35 text-amber-900 border border-amber-600/30">
-          Gold
-        </span>
-        <div className="text-4xl text-amber-900">
-          <i className="ti ti-crown" />
+
+        <div className="flex justify-between items-start">
+          <span className="badge badge-primary font-bold tracking-widest uppercase text-[10px] px-2.5 py-1">
+            Gold Plan
+          </span>
+          <div className="text-3xl" aria-hidden="true">
+            👑
+          </div>
         </div>
 
-        <h2
-          className="font-bold text-2xl text-amber-950"
-          style={{ fontFamily: "'Playfair Display', serif" }}
-        >
-          Gold Membership
-        </h2>
+        <div>
+          <h2 className="font-serif font-black text-2xl text-base-content tracking-tight">
+            Gold Membership
+          </h2>
+          <p className="text-sm text-base-content/60 mt-1 font-medium">
+            1 month plan — our best value offer
+          </p>
+        </div>
 
-        <p className="text-sm text-amber-800">
-          1 month plan — our best value offer
-        </p>
-        <div className="divider my-0 border-black/10" />
-        <ul className="flex flex-col gap-3 flex-1 text-sm text-amber-950">
-          <li className="flex gap-2">
-            <i className="ti ti-infinity" /> Unlimited requests per day
+        <div className="divider my-0 border-base-300" />
+
+        <ul className="flex flex-col gap-3.5 flex-1 text-sm text-base-content/80 font-medium">
+          <li className="flex items-center gap-2.5">
+            <span className="text-primary font-bold text-lg" aria-hidden="true">★</span> Unlimited requests per day
           </li>
-          <li className="flex gap-2">
-            <i className="ti ti-rosette" /> Gold badge on your profile
+          <li className="flex items-center gap-2.5">
+            <span className="text-primary font-bold text-lg" aria-hidden="true">★</span> Gold badge visible on profile
           </li>
-          <li className="flex gap-2">
-            <i className="ti ti-calendar" /> Valid for 1 months
+          <li className="flex items-center gap-2.5">
+            <span className="text-primary font-bold text-lg" aria-hidden="true">★</span> Valid for 1 full month
           </li>
         </ul>
-        <button
-          className="btn w-full mt-4 text-amber-200 border-none font-semibold"
-          style={{
-            background: "linear-gradient(135deg, #92400e 0%, #5c2a00 100%)",
-          }}
-          onClick={() => {
-            handleBuyPremium("gold");
-          }}
-        >
-          Buy Gold Membership - ₹699
-        </button>
+
+        <div className="mt-4 pt-2">
+          <button
+            className="btn btn-primary w-full h-12 rounded-xl font-bold tracking-wide shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary/50 text-primary-content"
+            onClick={() => handleBuyPremium("gold")}
+          >
+            Buy Gold - ₹699
+          </button>
+        </div>
       </div>
-
-
     </div>
   );
 };

@@ -28,7 +28,7 @@ const Header = () => {
     return (
       <header className="navbar bg-base-100 border-b border-base-200 sticky top-0 z-50 justify-center h-16 transition-all duration-300">
         <span className="font-serif font-black text-2xl tracking-tight bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent animate-subtle-pulse">
-          DevMeet
+          Partner
         </span>
       </header>
     );
@@ -44,7 +44,7 @@ const Header = () => {
           to="/"
           className="font-serif font-black text-2xl tracking-tight bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent hover:opacity-80 transition-opacity"
         >
-          DevMeet
+          Partner
         </Link>
       </div>
 
@@ -54,31 +54,28 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-1 mr-2">
           <Link
             to="/"
-            className={`btn btn-ghost btn-sm rounded-lg font-medium tracking-wide ${
-              isActive("/")
+            className={`btn btn-ghost btn-sm rounded-lg font-medium tracking-wide ${isActive("/")
                 ? "bg-primary/10 text-primary hover:bg-primary/20"
                 : "text-base-content/70 hover:text-base-content"
-            }`}
+              }`}
           >
             Feed
           </Link>
           <Link
             to="/connections"
-            className={`btn btn-ghost btn-sm rounded-lg font-medium tracking-wide ${
-              isActive("/connections")
+            className={`btn btn-ghost btn-sm rounded-lg font-medium tracking-wide ${isActive("/connections")
                 ? "bg-primary/10 text-primary hover:bg-primary/20"
                 : "text-base-content/70 hover:text-base-content"
-            }`}
+              }`}
           >
             Connections
           </Link>
           <Link
             to="/requests"
-            className={`btn btn-ghost btn-sm rounded-lg font-medium tracking-wide ${
-              isActive("/requests")
+            className={`btn btn-ghost btn-sm rounded-lg font-medium tracking-wide ${isActive("/requests")
                 ? "bg-primary/10 text-primary hover:bg-primary/20"
                 : "text-base-content/70 hover:text-base-content"
-            }`}
+              }`}
           >
             Requests
           </Link>

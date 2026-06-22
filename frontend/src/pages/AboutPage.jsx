@@ -3,10 +3,10 @@ import StaticLayout from "../components/layout/StaticLayout";
 
 const AboutPage = () => {
   return (
-    <StaticLayout title="About DevMeet" badge="Project Architecture">
+    <StaticLayout title="About Partner" badge="Project Architecture">
       <div className="space-y-4">
         <p>
-          <strong className="text-primary font-bold">DevMeet</strong> is a high-fidelity, production-ready peer matching network designed for software engineers, developers, and creators to connect, match, and establish real-time collaborative development channels nearby.
+          <strong className="text-primary font-bold">Partner</strong> is a high-fidelity, production-ready peer matching network designed for software engineers, developers, and creators to connect, match, and establish real-time collaborative development channels nearby.
         </p>
         
         <div className="divider my-2 border-base-300" />

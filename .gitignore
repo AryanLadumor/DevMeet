@@ -37,3 +37,16 @@ dist-ssr
 *.sw?
 
 test.md
+
+
+.agents/
+.claude/
+.kilocode/
+
+
+skills-lock.json
+
+
+DESIGN.md
+AGENTS.md
+GEMINI.md

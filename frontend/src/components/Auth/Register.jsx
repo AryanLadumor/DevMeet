@@ -40,7 +40,7 @@ const Register = () => {
     } catch (error) {
       setError(
         error.response?.data?.error ||
-          "Registration details are invalid. Please check fields.",
+        "Registration details are invalid. Please check fields.",
       );
     } finally {
       setLoading(false);
@@ -65,13 +65,17 @@ const Register = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* First Name Container */}
               <div className="form-control">
-                <label className="label pt-0 pb-1.5 px-1">
+                <label htmlFor="firstName" className="label pt-0 pb-1.5 px-1">
                   <span className="label-text font-semibold text-base-content/70 text-xs uppercase tracking-wider">
                     First Name *
                   </span>
                 </label>
                 <input
+                  id="firstName"
+                  name="firstName"
                   type="text"
+                  autoComplete="given-name"
+                  spellCheck={false}
                   placeholder="John"
                   className="input input-bordered w-full h-12 bg-base-100/50 rounded-xl focus:bg-base-100 focus:border-primary transition-all font-medium"
                   value={firstName}
@@ -82,13 +86,17 @@ const Register = () => {
 
               {/* Last Name Container */}
               <div className="form-control">
-                <label className="label pt-0 pb-1.5 px-1">
+                <label htmlFor="lastName" className="label pt-0 pb-1.5 px-1">
                   <span className="label-text font-semibold text-base-content/70 text-xs uppercase tracking-wider">
                     Last Name
                   </span>
                 </label>
                 <input
+                  id="lastName"
+                  name="lastName"
                   type="text"
+                  autoComplete="family-name"
+                  spellCheck={false}
                   placeholder="Doe"
                   className="input input-bordered w-full h-12 bg-base-100/50 rounded-xl focus:bg-base-100 focus:border-primary transition-all font-medium"
                   value={lastName}
@@ -100,14 +108,18 @@ const Register = () => {
 
             {/* Email Input Field Block */}
             <div className="form-control">
-              <label className="label pt-0 pb-1.5 px-1">
+              <label htmlFor="email" className="label pt-0 pb-1.5 px-1">
                 <span className="label-text font-semibold text-base-content/70 text-xs uppercase tracking-wider">
                   Email Address *
                 </span>
               </label>
               <input
+                id="email"
+                name="email"
                 type="email"
-                placeholder="john.doe@example.com"
+                autoComplete="email"
+                spellCheck={false}
+                placeholder="john.doe@example.com…"
                 className="input input-bordered w-full h-12 bg-base-100/50 rounded-xl focus:bg-base-100 focus:border-primary transition-all font-medium"
                 value={emailId}
                 onChange={(e) => setEmailId(e.target.value)}
@@ -117,14 +129,17 @@ const Register = () => {
 
             {/* Password input Field Block */}
             <div className="form-control">
-              <label className="label pt-0 pb-1.5 px-1">
+              <label htmlFor="password" className="label pt-0 pb-1.5 px-1">
                 <span className="label-text font-semibold text-base-content/70 text-xs uppercase tracking-wider">
                   Password *
                 </span>
               </label>
               <input
+                id="password"
+                name="password"
                 type="password"
-                placeholder="At least 8 strong characters"
+                autoComplete="new-password"
+                placeholder="At least 8 strong characters…"
                 className="input input-bordered w-full h-12 bg-base-100/50 rounded-xl focus:bg-base-100 focus:border-primary transition-all font-medium"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -136,12 +151,14 @@ const Register = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
               {/* Age Numeric Controller Container */}
               <div className="form-control">
-                <label className="label pt-0 pb-1.5 px-1">
+                <label htmlFor="age" className="label pt-0 pb-1.5 px-1">
                   <span className="label-text font-semibold text-base-content/70 text-xs uppercase tracking-wider">
                     Age (18 - 55)
                   </span>
                 </label>
                 <input
+                  id="age"
+                  name="age"
                   type="number"
                   placeholder="24"
                   min="18"
@@ -156,8 +173,9 @@ const Register = () => {
               {/* Gender Radio Inline Picker Buttons Container */}
               <div className="form-control h-12 justify-center bg-base-100/30 border border-base-300 rounded-xl px-4">
                 <div className="flex justify-around gap-2">
-                  <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-base-content/80">
+                  <label htmlFor="gender-male" className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-base-content/80">
                     <input
+                      id="gender-male"
                       type="radio"
                       name="gender"
                       className="radio radio-primary radio-sm"
@@ -169,8 +187,9 @@ const Register = () => {
                     Male
                   </label>
 
-                  <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-base-content/80">
+                  <label htmlFor="gender-female" className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-base-content/80">
                     <input
+                      id="gender-female"
                       type="radio"
                       name="gender"
                       className="radio radio-secondary radio-sm"
@@ -187,12 +206,13 @@ const Register = () => {
 
             {/* Error messaging block context */}
             {error && (
-              <div className="alert alert-error bg-error/10 border-error/20 text-error text-sm rounded-xl py-2.5 px-4 flex items-start gap-2 animate-fadeIn">
+              <div className="alert alert-error bg-error/10 border-error/20 text-error text-sm rounded-xl py-2.5 px-4 flex items-start gap-2 animate-fadeIn" role="alert">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="stroke-current shrink-0 h-5 w-5 mt-0.5"
                   fill="none"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -213,7 +233,7 @@ const Register = () => {
                 disabled={loading}
               >
                 {loading ? (
-                  <span className="loading loading-spinner"></span>
+                  <span className="loading loading-spinner" aria-hidden="true"></span>
                 ) : (
                   "Create Account"
                 )}

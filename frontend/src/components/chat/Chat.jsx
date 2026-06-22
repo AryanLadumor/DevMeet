@@ -39,7 +39,7 @@ const Chat = () => {
         const chatMessages = chat.data.messages.map((msg) => {
           const { senderId, text, createdAt } = msg;
           const date = new Date(createdAt);
-          const hours = String(date.getHour+s()).padStart(2, "0");
+          const hours = String(date.getHours()).padStart(2, "0");
           const minutes = String(date.getMinutes()).padStart(2, "0");
 
           // Standardize database structure handles gracefully whether populated or raw string
@@ -156,7 +156,8 @@ const Chat = () => {
       <div className="flex items-center gap-3 bg-base-200 border border-base-300 rounded-2xl p-3 shadow-md shrink-0">
         <Link
           to="/connections"
-          className="btn btn-ghost btn-circle btn-sm md:flex hidden items-center justify-center"
+          className="btn btn-ghost btn-circle btn-sm md:flex hidden items-center justify-center focus-visible:ring-2 focus-visible:ring-primary/50"
+          aria-label="Back to connections"
         >
           ‹
         </Link>
@@ -166,8 +167,10 @@ const Chat = () => {
               src={
                 targetUser?.photoURL || "https://example.com/default-avatar.png"
               }
-              alt="Partner avatar"
+              alt={`Chat partner avatar of ${targetUser?.firstName || "User"}`}
               className="object-cover w-full h-full"
+              width="40"
+              height="40"
             />
           </div>
         </div>
@@ -207,12 +210,14 @@ const Chat = () => {
               <div className="chat-image avatar">
                 <div className="w-8 h-8 rounded-full bg-base-300 shadow-sm overflow-hidden">
                   <img
-                    alt="User avatar"
+                    alt={`${currentFirstName}'s avatar`}
                     src={
                       currentPhotoURL ||
                       "https://example.com/default-avatar.png"
                     }
                     className="object-cover w-full h-full"
+                    width="32"
+                    height="32"
                   />
                 </div>
               </div>
@@ -227,11 +232,10 @@ const Chat = () => {
               </div>
 
               <div
-                className={`chat-bubble text-sm font-medium max-w-xs sm:max-w-md leading-relaxed rounded-2xl shadow-sm ${
-                  isMe
+                className={`chat-bubble text-sm font-medium max-w-xs sm:max-w-md leading-relaxed rounded-2xl shadow-sm ${isMe
                     ? "chat-bubble-primary text-primary-content"
                     : "chat-bubble-neutral"
-                }`}
+                  }`}
               >
                 {msg.newMessage}
               </div>
@@ -245,17 +249,22 @@ const Chat = () => {
       <div className="bg-base-200 border border-base-300 rounded-2xl p-2 shadow-lg shrink-0">
         <div className="flex items-center gap-2">
           <input
+            id="chat-message-input"
+            name="message"
             type="text"
-            placeholder="Write a message..."
-            className="input w-full h-11 bg-base-100/60 focus:bg-base-100 font-medium rounded-xl text-sm px-4 focus:border-secondary transition-all"
+            placeholder="Write a message…"
+            className="input w-full h-11 bg-base-100/60 focus:bg-base-100 font-medium rounded-xl text-sm px-4 focus:border-secondary transition-[background-color,border-color,box-shadow] duration-200 focus-visible:ring-2 focus-visible:ring-secondary/50"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            aria-label="Write a message"
+            autoComplete="off"
           />
 
           <button
-            className="btn btn-secondary h-11 px-5 rounded-xl font-bold tracking-wide shadow-md shadow-secondary/10 hover:shadow-secondary/20 transition-all duration-200"
+            className="btn btn-secondary h-11 px-5 rounded-xl font-bold tracking-wide shadow-md shadow-secondary/10 hover:shadow-secondary/20 transition-[background-color,color,border-color,transform,box-shadow] duration-200 active:scale-98 focus-visible:ring-2 focus-visible:ring-secondary/50"
             onClick={sendMessage}
+            aria-label="Send message"
           >
             Send
           </button>

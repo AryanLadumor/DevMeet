@@ -29,7 +29,7 @@ const Login = () => {
     } catch (error) {
       setError(
         error.response?.data?.error ||
-          "Invalid email or password. Please try again.",
+        "Invalid email or password. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -41,7 +41,7 @@ const Login = () => {
       <div className="card bg-base-200 border border-base-300 w-full max-w-md shadow-2xl rounded-2xl transition-all duration-300 hover:shadow-primary/5">
         <div className="card-body p-6 sm:p-8">
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-serif font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">
+            <h2 className="text-3xl font-serif font-black bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">
               Welcome Back
             </h2>
             <p className="text-sm text-base-content/60 mt-1.5 font-medium">
@@ -52,7 +52,7 @@ const Login = () => {
           <form onSubmit={handleClick} className="space-y-5">
             {/* Email Field Container */}
             <div className="form-control">
-              <label className="label pt-0 pb-1.5 px-1">
+              <label htmlFor="email" className="label pt-0 pb-1.5 px-1">
                 <span className="label-text font-semibold text-base-content/70 text-xs uppercase tracking-wider">
                   Email Address
                 </span>
@@ -67,13 +67,18 @@ const Login = () => {
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  aria-hidden="true"
                 >
                   <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                 </svg>
                 <input
+                  id="email"
+                  name="email"
                   type="email"
-                  placeholder="name@example.com"
+                  autoComplete="email"
+                  spellCheck={false}
+                  placeholder="name@example.com…"
                   className="input input-bordered w-full pl-12 h-12 bg-base-100/50 rounded-xl focus:bg-base-100 focus:border-primary transition-all font-medium"
                   value={emailId}
                   onChange={(e) => setEmailId(e.target.value)}
@@ -84,7 +89,7 @@ const Login = () => {
 
             {/* Password Field Container */}
             <div className="form-control">
-              <label className="label pt-0 pb-1.5 px-1">
+              <label htmlFor="password" className="label pt-0 pb-1.5 px-1">
                 <span className="label-text font-semibold text-base-content/70 text-xs uppercase tracking-wider">
                   Password
                 </span>
@@ -99,6 +104,7 @@ const Login = () => {
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  aria-hidden="true"
                 >
                   <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path>
                   <circle
@@ -109,7 +115,10 @@ const Login = () => {
                   ></circle>
                 </svg>
                 <input
+                  id="password"
+                  name="password"
                   type="password"
+                  autoComplete="current-password"
                   placeholder="••••••••"
                   className="input input-bordered w-full pl-12 h-12 bg-base-100/50 rounded-xl focus:bg-base-100 focus:border-primary transition-all font-medium"
                   value={password}
@@ -121,12 +130,13 @@ const Login = () => {
 
             {/* Contextual Error Layout Alert */}
             {error && (
-              <div className="alert alert-error bg-error/10 border-error/20 text-error text-sm rounded-xl py-2.5 px-4 flex items-start gap-2 animate-fadeIn">
+              <div className="alert alert-error bg-error/10 border-error/20 text-error text-sm rounded-xl py-2.5 px-4 flex items-start gap-2 animate-fadeIn" role="alert">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="stroke-current shrink-0 h-5 w-5 mt-0.5"
                   fill="none"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -147,7 +157,7 @@ const Login = () => {
                 disabled={loading}
               >
                 {loading ? (
-                  <span className="loading loading-spinner"></span>
+                  <span className="loading loading-spinner" aria-hidden="true"></span>
                 ) : (
                   "Sign In"
                 )}

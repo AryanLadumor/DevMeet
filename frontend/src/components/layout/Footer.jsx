@@ -9,7 +9,7 @@ const Footer = () => {
           <p>
             &copy; {new Date().getFullYear()}{" "}
             <span className="font-serif font-black text-transparent bg-linear-to-r from-primary to-secondary bg-clip-text ml-1">
-              DevMeet
+              Partner
             </span>
             . All rights reserved.
           </p>

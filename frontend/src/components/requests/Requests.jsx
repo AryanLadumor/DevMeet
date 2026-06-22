@@ -35,11 +35,13 @@ const Requests = () => {
   // Clean Empty State Fallback View Panel
   if (requests.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center text-center min-h-[50vh] w-full max-w-md mx-auto px-4">
-        <div className="text-5xl mb-4">Inbox Empty ✉️</div>
-        <h3 className="text-xl font-bold text-base-content">No Pending Requests</h3>
-        <p className="text-sm text-base-content/60 mt-2 leading-relaxed">
-          You don't have any inbound match invitations right now. Your profile is in the rotation stack—hang tight, incoming requests will appear here!
+      <div className="flex flex-col items-center justify-center text-center min-h-[50vh] w-full max-w-md mx-auto px-4 py-8 animate-fadeIn">
+        <div className="w-20 h-20 rounded-full bg-base-200 flex items-center justify-center shadow-lg border border-base-300 mb-6 text-4xl" aria-hidden="true">
+          ✉️
+        </div>
+        <h3 className="text-2xl font-serif font-black text-base-content">Inbox Empty</h3>
+        <p className="text-sm text-base-content/60 mt-3 leading-relaxed">
+          You don't have any inbound invitations right now. Your profile is active in the discovery rotation—hang tight, new requests will appear here!
         </p>
       </div>
     );
